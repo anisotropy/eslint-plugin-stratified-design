@@ -8,24 +8,23 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("../../../lib/rules/import-lower-level"),
+const rule = require("../../../lib/rules/lower-level-imports"),
   RuleTester = require("eslint").RuleTester;
-
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
-ruleTester.run("import-lower-level", rule, {
-  valid: [
-    // give me some code that won't trigger a warning
-  ],
+const ruleTester = new RuleTester({
+  parserOptions: { ecmaVersion: 2022, sourceType: "module" },
+});
 
+ruleTester.run("lower-level-imports", rule, {
+  valid: ["import { func } from './lowerLevel'"],
   invalid: [
     {
-      code: "...",
-      errors: [{ message: "Fill me in.", type: "Me too" }],
+      code: "import { func } from './higherLevel'",
+      errors: [{ message: "Lower level modules should be imported." }],
     },
   ],
 });

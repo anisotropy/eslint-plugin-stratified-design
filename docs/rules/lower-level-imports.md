@@ -1,4 +1,4 @@
-# Should import lower level (import-lower-level)
+# Should import lower level (lower-level-imports)
 
 Please describe the origin of the rule here.
 
@@ -9,17 +9,13 @@ This rule aims to...
 Examples of **incorrect** code for this rule:
 
 ```js
-
 // fill me in
-
 ```
 
 Examples of **correct** code for this rule:
 
 ```js
-
 // fill me in
-
 ```
 
 ### Options
