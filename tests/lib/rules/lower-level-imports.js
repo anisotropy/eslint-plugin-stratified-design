@@ -31,10 +31,10 @@ src
 
 const options = [
   {
-    "/": [["layer1"], ["layer2"], ["layer3"]],
-    "/layer1": [["subLayer1"], ["subLayer2"]],
-    "/layer2": [["subLayer1"], ["subLayer2"]],
-    "/layer3": [["subLayer1"], ["subLayer2"]],
+    "/": ["layer1", "layer2", "layer3"],
+    "/layer1": ["subLayer1", "subLayer2"],
+    "/layer2": ["subLayer1", "subLayer2"],
+    "/layer3": ["subLayer1", "subLayer2"],
   },
 ];
 

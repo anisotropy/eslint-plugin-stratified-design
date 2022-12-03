@@ -17,10 +17,10 @@ const { parse, findSubStructure, compareLevels } = require("../../lib/helpers");
 //------------------------------------------------------------------------------
 
 const structure = {
-  "/": [["layer1"], ["layer2"], ["layer3"]],
-  "/layer1": [["subLayer1"], ["subLayer2"]],
-  "/layer2": [["subLayer1"], ["subLayer2"], ["subLayer3WithIndex"]],
-  "/layer3": [["subLayer1"], ["subLayer2"]],
+  "/": ["layer1", "layer2", "layer3"],
+  "/layer1": ["subLayer1", "subLayer2"],
+  "/layer2": ["subLayer1", "subLayer2"],
+  "/layer3": ["subLayer1", "subLayer2"],
 };
 
 describe("helpers", () => {
