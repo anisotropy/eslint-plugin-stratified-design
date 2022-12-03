@@ -10,68 +10,95 @@
 //------------------------------------------------------------------------------
 
 const assert = require("node:assert/strict");
-const { getLayer, getLayerLevel, compareLevel } = require("../../lib/helpers");
+const { parse, findSubStructure, compareLevels } = require("../../lib/helpers");
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
-const options = [
-  {
-    "/": [["layer1"], ["layer2"]],
-    layer1: [["layer1-1"], ["layer1-2"]],
-  },
-];
+const structure = {
+  "/": [["layer1"], ["layer2"], ["layer3"]],
+  "/layer1": [["subLayer1"], ["subLayer2"]],
+  "/layer2": [["subLayer1"], ["subLayer2"], ["subLayer3WithIndex"]],
+  "/layer3": [["subLayer1"], ["subLayer2"]],
+};
 
 describe("helpers", () => {
-  describe("getLayer()", () => {
-    it("should extract the directory name from filename", () => {
-      const layer = getLayer("/src/layer/module.js");
-      assert.equal(layer, "layer");
-    });
-    it("should extract the directory name from module source", () => {
-      const layer = getLayer("./layer/module");
-      assert.equal(layer, "layer");
-    });
-    it("should return empty string in the case of single module name", () => {
-      const layer = getLayer("module");
-      assert.equal(layer, "");
-    });
-    it("should return dot in the case of module in the current directory", () => {
-      const layer = getLayer("./module");
-      assert.equal(layer, ".");
+  describe("parse()", () => {
+    const tests = [
+      {
+        args: [
+          ["src", "layer1", "subLayer1"],
+          ["src", "layer2", "subLayer1"],
+        ],
+        expected: [["src"], ["layer1", "subLayer1"], ["layer2", "subLayer1"]],
+      },
+      {
+        args: [
+          ["src", "layer1"],
+          ["src", "layer1", "subLayer1"],
+        ],
+        expected: [["src", "layer1"], [], ["subLayer1"]],
+      },
+      {
+        args: [["layer1"], ["layer2"]],
+        expected: [[], ["layer1"], ["layer2"]],
+      },
+    ];
+    tests.forEach(({ args, expected }) => {
+      it(`${JSON.stringify(args)} -> ${JSON.stringify(expected)}`, () => {
+        assert.deepEqual(parse(...args), expected);
+      });
     });
   });
-  describe("getLayerLevel()", () => {
-    it("should return [1] for a second-level-layer", () => {
-      const level = getLayerLevel("layer2", options[0]);
-      assert.deepEqual(level, [1]);
-    });
-    it("should return [0, 1] for a second-level-layer in a first-level", () => {
-      const level = getLayerLevel("layer1-2", options[0]);
-      assert.deepEqual(level, [0, 1]);
+  describe("findSubStructure()", () => {
+    const tests = [
+      {
+        arg: [],
+        expected: "/",
+      },
+      {
+        arg: ["src"],
+        expected: "/",
+      },
+      {
+        arg: ["layer1"],
+        expected: "/layer1",
+      },
+      {
+        arg: ["src", "layer1"],
+        expected: "/layer1",
+      },
+    ];
+    tests.forEach(({ arg, expected }) => {
+      it(`${JSON.stringify(arg)} -> struncture["${expected}"]`, () => {
+        assert.deepEqual(findSubStructure(arg, structure), structure[expected]);
+      });
     });
   });
-  describe("compareLevel()", () => {
-    it("should return -1 for [0] and [0, 1]", () => {
-      const result = compareLevel([0], [0, 1]);
-      assert.equal(result, -1);
-    });
-    it("should return 1 for [0, 1] and [0]", () => {
-      const result = compareLevel([0, 1], [0]);
-      assert.equal(result, 1);
-    });
-    it("should return -1 for [0, 1] and [0, 2]", () => {
-      const result = compareLevel([0, 1], [0, 2]);
-      assert.equal(result, -1);
-    });
-    it("should return 1 for [0, 2] and [0, 1]", () => {
-      const result = compareLevel([0, 2], [0, 1]);
-      assert.equal(result, 1);
-    });
-    it("should return 0 for [0, 1] and [0, 1]", () => {
-      const result = compareLevel([0, 1], [0, 1]);
-      assert.equal(result, 0);
+  describe("compareLevels", () => {
+    const tests = [
+      {
+        args: ["layer1", "layer2"],
+        expected: -1,
+      },
+      {
+        args: ["layer1", "layer3"],
+        expected: -2,
+      },
+      {
+        args: ["layer1", "layer1"],
+        expected: 0,
+      },
+      {
+        args: ["layer2", "layer1"],
+        expected: 1,
+      },
+    ];
+    tests.forEach(({ args, expected }) => {
+      it(`${JSON.stringify(args)} -> ${expected}`, () => {
+        assert.equal(compareLevels(...args, structure["/"]), expected);
+      });
     });
   });
 });
