@@ -64,6 +64,11 @@ ruleTester.run("lower-level-imports", rule, {
       filename: "/src/layer1/subLayer1/module.js",
       options,
     },
+    {
+      code: "import { func } from '../layer1/module'",
+      filename: "/src/layer2/module.test.js",
+      options,
+    },
   ],
   invalid: [
     {
