@@ -29,14 +29,12 @@ src
  ┃ ┗ subLayer2
 */
 
-const options = [
-  {
-    "/": ["layer1", "layer2", "layer3"],
-    "/layer1": ["subLayer1", "subLayer2"],
-    "/layer2": ["subLayer1", "subLayer2"],
-    "/layer3": ["subLayer1", "subLayer2"],
-  },
-];
+const structure = {
+  "/": ["layer1", "layer2", "layer3"],
+  "/layer1": ["subLayer1", "subLayer2"],
+  "/layer2": ["subLayer1", "subLayer2"],
+  "/layer3": ["subLayer1", "subLayer2"],
+};
 
 const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 2022, sourceType: "module" },
@@ -47,46 +45,46 @@ ruleTester.run("lower-level-imports", rule, {
     {
       code: "import { func } from './subLayer1/module'",
       filename: "/src/layer1/module.js",
-      options,
+      options: [{ structure }],
     },
     {
       code: "import { func } from './subOtherLayer/module'",
       filename: "/src/layer2/module.js",
-      options,
+      options: [{ structure }],
     },
     {
       code: "import { func } from '../../layer2/module'",
       filename: "/src/layer1/subLayer1/module.js",
-      options,
+      options: [{ structure }],
     },
     {
       code: "import { func } from '../../layer2/subLayer1/module'",
       filename: "/src/layer1/subLayer1/module.js",
-      options,
+      options: [{ structure }],
     },
     {
       code: "import { func } from '../layer1/module'",
       filename: "/src/layer2/module.test.js",
-      options,
+      options: [{ structure }],
     },
   ],
   invalid: [
     {
       code: "import { func } from '../layer1/module'",
       filename: "/src/layer2/module.js",
-      options,
+      options: [{ structure }],
       errors: [{ messageId: "not-lower-level" }],
     },
     {
       code: "import { func } from '../subLayer1/module'",
       filename: "/src/layer1/subLayer2/module.js",
-      options,
+      options: [{ structure }],
       errors: [{ messageId: "not-lower-level" }],
     },
     {
       code: "import { func } from '../subOtherLayer/module'",
       filename: "/src/layer2/subLayer1/module.js",
-      options,
+      options: [{ structure }],
       errors: [{ messageId: "not-lower-level" }],
     },
   ],
