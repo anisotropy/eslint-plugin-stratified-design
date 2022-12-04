@@ -10,14 +10,19 @@
 //------------------------------------------------------------------------------
 
 const assert = require("node:assert/strict");
-const { parse, findSubStructure, compareLevels } = require("../../lib/helpers");
+const {
+  parse,
+  findSubStructure,
+  isLowerThan,
+  isLowerThanInterface,
+} = require("../../lib/helpers");
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
 const structure = {
-  "/": ["layer1", "layer2", "layer3"],
+  "/": ["layer1", { name: "layer2", interface: true }, "layer3"],
   "/layer1": ["subLayer1", "subLayer2"],
   "/layer2": ["subLayer1", "subLayer2"],
   "/layer3": ["subLayer1", "subLayer2"],
@@ -76,28 +81,53 @@ describe("helpers", () => {
       });
     });
   });
-  describe("compareLevels", () => {
+  describe("isLowerThan()", () => {
     const tests = [
       {
         args: ["layer1", "layer2"],
-        expected: -1,
+        expected: false,
       },
       {
         args: ["layer1", "layer3"],
-        expected: -2,
+        expected: false,
       },
       {
         args: ["layer1", "layer1"],
-        expected: 0,
+        expected: false,
       },
       {
         args: ["layer2", "layer1"],
-        expected: 1,
+        expected: true,
+      },
+      {
+        args: ["layer3", "layer1"],
+        expected: false,
       },
     ];
     tests.forEach(({ args, expected }) => {
       it(`${JSON.stringify(args)} -> ${expected}`, () => {
-        assert.equal(compareLevels(...args, structure["/"]), expected);
+        assert.equal(isLowerThan(...args, structure["/"]), expected);
+      });
+    });
+  });
+  describe("isLowerThanInterface()", () => {
+    const tests = [
+      {
+        args: ["layer1"],
+        expected: false,
+      },
+      {
+        args: ["layer2"],
+        expected: false,
+      },
+      {
+        args: ["layer3"],
+        expected: true,
+      },
+    ];
+    tests.forEach(({ args, expected }) => {
+      it(`${JSON.stringify(args)} -> ${expected}`, () => {
+        assert.equal(isLowerThanInterface(...args, structure["/"]), expected);
       });
     });
   });

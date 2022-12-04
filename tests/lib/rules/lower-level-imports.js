@@ -33,7 +33,14 @@ const structure = {
   "/": ["layer1", "layer2", "layer3"],
   "/layer1": ["subLayer1", "subLayer2"],
   "/layer2": ["subLayer1", "subLayer2"],
-  "/layer3": ["subLayer1", "subLayer2"],
+  "/layer3": ["subLayer1", "subLayer2", "subLayer3"],
+};
+
+const structureWithInterfaces = {
+  "/": ["layer1", { name: "layer2", interface: true }, "layer3"],
+  "/layer1": ["subLayer1", "subLayer2"],
+  "/layer2": ["subLayer1", "subLayer2"],
+  "/layer3": ["subLayer1", { name: "subLayer2", interface: true }, "subLayer3"],
 };
 
 const ruleTester = new RuleTester({
@@ -85,6 +92,24 @@ ruleTester.run("lower-level-imports", rule, {
       code: "import { func } from '../subOtherLayer/module'",
       filename: "/src/layer2/subLayer1/module.js",
       options: [{ structure }],
+      errors: [{ messageId: "not-lower-level" }],
+    },
+    {
+      code: "import { func } from '../../layer3/module'",
+      filename: "/src/layer1/subLayer1/module.js",
+      options: [{ structure: structureWithInterfaces }],
+      errors: [{ messageId: "not-lower-level" }],
+    },
+    {
+      code: "import { func } from '../subLayer3/module'",
+      filename: "/src/layer3/subLayer1/module.js",
+      options: [{ structure: structureWithInterfaces }],
+      errors: [{ messageId: "not-lower-level" }],
+    },
+    {
+      code: "import { func } from '../../layer3/subLayer3/module'",
+      filename: "/src/layer2/subLayer1/module.js",
+      options: [{ structure: structureWithInterfaces }],
       errors: [{ messageId: "not-lower-level" }],
     },
   ],
