@@ -74,6 +74,16 @@ ruleTester.run("lower-level-imports", rule, {
       filename: "/src/layer2/module.test.js",
       options: [{ structure }],
     },
+    {
+      code: "import { func } from '../layer2/module'",
+      filename: "/src/layer1/module.test.js",
+      options: [{ structure: structureWithInterfaces }],
+    },
+    {
+      code: "import { func } from '../layer2/module'",
+      filename: "/src/layer1/subLayer1/module.test.js",
+      options: [{ structure: structureWithInterfaces }],
+    },
   ],
   invalid: [
     {
@@ -98,19 +108,37 @@ ruleTester.run("lower-level-imports", rule, {
       code: "import { func } from '../../layer3/module'",
       filename: "/src/layer1/subLayer1/module.js",
       options: [{ structure: structureWithInterfaces }],
-      errors: [{ messageId: "not-lower-level" }],
+      errors: [{ messageId: "lower-interface" }],
     },
     {
       code: "import { func } from '../subLayer3/module'",
       filename: "/src/layer3/subLayer1/module.js",
       options: [{ structure: structureWithInterfaces }],
-      errors: [{ messageId: "not-lower-level" }],
+      errors: [{ messageId: "lower-interface" }],
     },
     {
       code: "import { func } from '../../layer3/subLayer3/module'",
       filename: "/src/layer2/subLayer1/module.js",
       options: [{ structure: structureWithInterfaces }],
-      errors: [{ messageId: "not-lower-level" }],
+      errors: [{ messageId: "lower-interface" }],
+    },
+    {
+      code: "import { func } from '../layer2/subLayer1/module'",
+      filename: "/src/layer1/module.js",
+      options: [{ structure: structureWithInterfaces }],
+      errors: [{ messageId: "lower-interface" }],
+    },
+    {
+      code: "import { func } from '../../layer2/subLayer1/module'",
+      filename: "/src/layer1/subLayer1/module.js",
+      options: [{ structure: structureWithInterfaces }],
+      errors: [{ messageId: "lower-interface" }],
+    },
+    {
+      code: "import { func } from '../layer3/subLayer1/module'",
+      filename: "/src/layer1/module.js",
+      options: [{ structure: structureWithInterfaces }],
+      errors: [{ messageId: "lower-interface" }],
     },
   ],
 });

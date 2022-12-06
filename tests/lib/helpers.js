@@ -101,7 +101,7 @@ describe("helpers", () => {
       },
       {
         args: ["layer3", "layer1"],
-        expected: false,
+        expected: true,
       },
     ];
     tests.forEach(({ args, expected }) => {
