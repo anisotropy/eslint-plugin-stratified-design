@@ -24,9 +24,10 @@ src
  ┃ ┣ subLayer1
  ┃ ┣ subLayer2
  ┃ ┣ subOtherLayer
- ┗ layer3
+ ┃ layer3
  ┃ ┣ subLayer1
  ┃ ┗ subLayer2
+ ┗ otherLayer
 */
 
 const structure = {
@@ -93,6 +94,11 @@ ruleTester.run("lower-level-imports", rule, {
       filename: "./src/layer1/subLayer1/module.test.js",
       options: [{ structure, root: "./src" }],
     },
+    {
+      code: "import { func } from 'otherNodeModule'",
+      filename: "./src/layer1/subLayer1/module.test.js",
+      options: [{ structure: structureWithOptions, root: "./src" }],
+    },
   ],
   invalid: [
     {
@@ -151,6 +157,12 @@ ruleTester.run("lower-level-imports", rule, {
     },
     {
       code: "import { func } from '@/layer1/subLayer1/module'",
+      filename: "./src/layer2/module.js",
+      options: [{ structure, root: "./src", aliases: { "@": "./src" } }],
+      errors: [{ messageId: "not-lower-level" }],
+    },
+    {
+      code: "import { func } from '@/otherLayer/module'",
       filename: "./src/layer2/module.js",
       options: [{ structure, root: "./src", aliases: { "@": "./src" } }],
       errors: [{ messageId: "not-lower-level" }],
