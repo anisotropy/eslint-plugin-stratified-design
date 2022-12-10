@@ -84,6 +84,11 @@ ruleTester.run("lower-level-imports", rule, {
       filename: "./src/layer1/subLayer1/module.test.js",
       options: [{ structure: structureWithInterfaces, root: "./src" }],
     },
+    {
+      code: "import { func } from 'nodeModule'",
+      filename: "./src/layer1/subLayer1/module.test.js",
+      options: [{ structure, root: "./src" }],
+    },
   ],
   invalid: [
     {
