@@ -14,6 +14,7 @@ const {
   parse,
   makeStructure,
   isLowerThan,
+  replaceAlias,
 } = require("../../lib/helpers");
 
 //------------------------------------------------------------------------------
@@ -58,20 +59,34 @@ describe("helpers", () => {
   describe("makeStructure()", () => {
     const tests = [
       {
-        args: ['/path/to/foo', './src', {'/': ['layer'], '/layer': ['subLayer']}],
-        expected: {'/path/to/foo/src': ['layer'], '/path/to/foo/src/layer': ['subLayer']}
+        args: [
+          "/path/to/foo",
+          "./src",
+          { "/": ["layer"], "/layer": ["subLayer"] },
+        ],
+        expected: {
+          "/path/to/foo/src": ["layer"],
+          "/path/to/foo/src/layer": ["subLayer"],
+        },
       },
       {
-        args: ['/path/to/foo', undefined, {'/': ['layer'], '/layer': ['subLayer']}],
-        expected: {'/path/to/foo': ['layer'], '/path/to/foo/layer': ['subLayer']}
-      }
+        args: [
+          "/path/to/foo",
+          undefined,
+          { "/": ["layer"], "/layer": ["subLayer"] },
+        ],
+        expected: {
+          "/path/to/foo": ["layer"],
+          "/path/to/foo/layer": ["subLayer"],
+        },
+      },
     ];
-    tests.forEach(({args, expected}) => {
+    tests.forEach(({ args, expected }) => {
       it(`${JSON.stringify(args)} -> ${JSON.stringify(expected)}`, () => {
         assert.deepEqual(makeStructure(...args), expected);
-      })
-    })
-  })
+      });
+    });
+  });
   describe("isLowerThan()", () => {
     const tests = [
       {
@@ -98,6 +113,19 @@ describe("helpers", () => {
     tests.forEach(({ args, expected }) => {
       it(`${JSON.stringify(args)} -> ${expected}`, () => {
         assert.equal(isLowerThan(...args, structure["/"]), expected);
+      });
+    });
+  });
+  describe("replaceAlias()", () => {
+    const tests = [
+      {
+        args: ["@f/layer", { "@": "./bar", "@f": "./foo" }],
+        expected: "./foo/layer",
+      },
+    ];
+    tests.forEach(({ args, expected }) => {
+      it(`${args[0]} -> ${expected}`, () => {
+        assert.equal(replaceAlias(...args), expected);
       });
     });
   });
