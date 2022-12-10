@@ -12,9 +12,8 @@
 const assert = require("node:assert/strict");
 const {
   parse,
-  findSubStructure,
+  makeStructure,
   isLowerThan,
-  isLowerThanInterface,
 } = require("../../lib/helpers");
 
 //------------------------------------------------------------------------------
@@ -56,31 +55,23 @@ describe("helpers", () => {
       });
     });
   });
-  describe("findSubStructure()", () => {
+  describe("makeStructure()", () => {
     const tests = [
       {
-        arg: [],
-        expected: "/",
+        args: ['/path/to/foo', './src', {'/': ['layer'], '/layer': ['subLayer']}],
+        expected: {'/path/to/foo/src': ['layer'], '/path/to/foo/src/layer': ['subLayer']}
       },
       {
-        arg: ["src"],
-        expected: "/",
-      },
-      {
-        arg: ["layer1"],
-        expected: "/layer1",
-      },
-      {
-        arg: ["src", "layer1"],
-        expected: "/layer1",
-      },
+        args: ['/path/to/foo', undefined, {'/': ['layer'], '/layer': ['subLayer']}],
+        expected: {'/path/to/foo': ['layer'], '/path/to/foo/layer': ['subLayer']}
+      }
     ];
-    tests.forEach(({ arg, expected }) => {
-      it(`${JSON.stringify(arg)} -> struncture["${expected}"]`, () => {
-        assert.deepEqual(findSubStructure(arg, structure), structure[expected]);
-      });
-    });
-  });
+    tests.forEach(({args, expected}) => {
+      it(`${JSON.stringify(args)} -> ${JSON.stringify(expected)}`, () => {
+        assert.deepEqual(makeStructure(...args), expected);
+      })
+    })
+  })
   describe("isLowerThan()", () => {
     const tests = [
       {
@@ -107,27 +98,6 @@ describe("helpers", () => {
     tests.forEach(({ args, expected }) => {
       it(`${JSON.stringify(args)} -> ${expected}`, () => {
         assert.equal(isLowerThan(...args, structure["/"]), expected);
-      });
-    });
-  });
-  describe("isLowerThanInterface()", () => {
-    const tests = [
-      {
-        args: ["layer1"],
-        expected: false,
-      },
-      {
-        args: ["layer2"],
-        expected: false,
-      },
-      {
-        args: ["layer3"],
-        expected: true,
-      },
-    ];
-    tests.forEach(({ args, expected }) => {
-      it(`${JSON.stringify(args)} -> ${expected}`, () => {
-        assert.equal(isLowerThanInterface(...args, structure["/"]), expected);
       });
     });
   });
