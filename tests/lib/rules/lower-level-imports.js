@@ -81,22 +81,22 @@ ruleTester.run("lower-level-imports", rule, {
     },
     {
       code: "import { func } from '../layer2/module'",
-      filename: "./src/layer1/module.test.js",
+      filename: "./src/layer1/module.js",
       options: [{ structure: structureWithOptions, root: "./src" }],
     },
     {
-      code: "import { func } from '../layer2/module'",
-      filename: "./src/layer1/subLayer1/module.test.js",
+      code: "import { func } from '../../layer2/module'",
+      filename: "./src/layer1/subLayer1/module.js",
       options: [{ structure: structureWithOptions, root: "./src" }],
     },
     {
       code: "import { func } from 'nodeModule'",
-      filename: "./src/layer1/subLayer1/module.test.js",
+      filename: "./src/layer1/subLayer1/module.js",
       options: [{ structure, root: "./src" }],
     },
     {
       code: "import { func } from 'otherNodeModule'",
-      filename: "./src/layer1/subLayer1/module.test.js",
+      filename: "./src/layer1/subLayer1/module.js",
       options: [{ structure: structureWithOptions, root: "./src" }],
     },
   ],
