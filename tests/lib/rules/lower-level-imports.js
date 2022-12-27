@@ -99,6 +99,11 @@ ruleTester.run("lower-level-imports", rule, {
       filename: "./src/layer1/subLayer1/module.js",
       options: [{ structure: structureWithOptions, root: "./src" }],
     },
+    {
+      code: "import { func } from './subLayer2/module'",
+      filename: "./src/layer1/module.js",
+      options: [],
+    },
   ],
   invalid: [
     {
@@ -184,6 +189,18 @@ ruleTester.run("lower-level-imports", rule, {
       filename: "./src/layer1/subLayer2/module.js",
       options: [{ structure: structureWithOptions, root: "./src" }],
       errors: [{ messageId: "lower-interface" }],
+    },
+    {
+      code: "import { func } from '../layer2/module'",
+      filename: "./src/layer1/module.js",
+      options: [],
+      errors: [{ messageId: "not-lower-level" }],
+    },
+    {
+      code: "import { func } from '@/layer2/module'",
+      filename: "./src/layer1/module.js",
+      options: [{ aliases: { "@": "./src" } }],
+      errors: [{ messageId: "not-lower-level" }],
     },
   ],
 });
