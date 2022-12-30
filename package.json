@@ -1,7 +1,7 @@
 {
   "name": "@anisotropy/eslint-plugin-stratified-design",
-  "version": "0.0.0",
-  "description": "Stratified Design",
+  "version": "0.1.0",
+  "description": "ESlint rules for stratified design",
   "keywords": [
     "eslint",
     "eslintplugin",
