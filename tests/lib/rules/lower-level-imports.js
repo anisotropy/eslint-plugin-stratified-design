@@ -1,5 +1,5 @@
 /**
- * @fileoverview Should import lower level
+ * @fileoverview test for lower-level-imports
  * @author Hodoug Joung
  */
 "use strict";
