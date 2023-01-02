@@ -8,6 +8,10 @@ This rule requires that lower level modules be imported. Basically,
 
 However, you can alter this hierarchy using the structure option.
 
+This rule works properly on POSIX systems, where the path segment separator is `/`. It will be modified to work well on Windows systems in the future.
+
+Test files, `*.test.*`, are not restricted by this rule.
+
 ### Options
 
 The syntax to specify the level structure looks like this:
