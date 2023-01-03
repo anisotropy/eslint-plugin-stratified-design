@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "lint": "eslint '**/*.{js,ts}'"
+  },
+  "devDependencies": {
+    "@anisotropy/eslint-plugin-stratified-design": "file:../../"
+  }
+}
