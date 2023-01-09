@@ -5,7 +5,9 @@
   "keywords": [
     "eslint",
     "eslintplugin",
-    "eslint-plugin"
+    "eslint-plugin",
+    "stratified",
+    "stratified design"
   ],
   "author": "Hodoug Joung",
   "repository": {
