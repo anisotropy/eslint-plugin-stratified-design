@@ -39,3 +39,4 @@ Then configure the rules you want to use under the rules section.
 ## Supported Rules
 
 - [lower-level-imports](https://github.com/anisotropy/eslint-plugin-stratified-design/blob/main/docs/rules/lower-level-imports.md): Require that lower level modules be imported
+- [no-same-level-funcs](https://github.com/anisotropy/eslint-plugin-stratified-design/blob/main/docs/rules/no-same-level-funcs.md): Disallow calling functions in the same file
