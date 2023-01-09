@@ -1,11 +1,13 @@
 {
   "name": "@anisotropy/eslint-plugin-stratified-design",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "ESlint rules for stratified design",
   "keywords": [
     "eslint",
     "eslintplugin",
-    "eslint-plugin"
+    "eslint-plugin",
+    "stratified",
+    "stratified design"
   ],
   "author": "Hodoug Joung",
   "repository": {
