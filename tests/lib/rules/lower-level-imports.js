@@ -35,21 +35,11 @@ const structure = [
   "layer1/subLayer2",
   "layer2/subLayer1",
   "layer2/subLayer2",
+  { name: "node-module", isNodeModule: true },
   "layer3/subLayer1",
   "layer3/subLayer2",
   "layer3/subLayer3",
 ];
-
-const structureWithOptions = {
-  "/": ["layer1", { name: "layer2", interface: true }, "layer3"],
-  "/layer1": ["subLayer1", "subLayer2"],
-  "/layer2": [
-    "subLayer1",
-    "subLayer2",
-    { name: "nodeModule", isNodeModule: true },
-  ],
-  "/layer3": ["subLayer1", { name: "subLayer2", interface: true }, "subLayer3"],
-};
 
 const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 2022, sourceType: "module" },
@@ -67,6 +57,22 @@ ruleTester.run("lower-level-imports", rule, {
       filename: "./src/layer1/subLayer1.js",
       options: [{ structure, root: "./src" }],
     },
+    {
+      code: "import { func } from '@/layer1/subLayer2'",
+      filename: "./src/layer1/subLayer1.js",
+      options: [{ structure, root: "./src", aliases: { "@": "./src" } }],
+    },
+    {
+      code: "import { func } from 'node-module'",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+    },
+    {
+      code: "import { func } from 'node-module'",
+      filename: "./src/layer2/subLayer1.js",
+      options: [{ structure, root: "./src" }],
+    },
+    // -------------------------------------------
     // {
     //   code: "import { func } from '../layer2/subLayer1'",
     //   filename: "./src/layer1/subLayer1.js",
@@ -140,6 +146,18 @@ ruleTester.run("lower-level-imports", rule, {
         },
       ],
     },
+    {
+      code: "import { func } from 'node-module'",
+      filename: "./src/layer3/subLayer1.js",
+      options: [{ structure, root: "./src" }],
+      errors: [
+        {
+          messageId: "not-lower-level",
+          data: { module: "node-module", file: "layer3/subLayer1" },
+        },
+      ],
+    },
+    // ------------------------------
     // {
     //   code: "import { func } from '../layer1/module'",
     //   filename: "./src/layer2/module.js",
