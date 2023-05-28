@@ -15,25 +15,10 @@ const rule = require("../../../lib/rules/lower-level-imports"),
 // Tests
 //------------------------------------------------------------------------------
 
-/* 
-src
- ┣ layer1
- ┃ ┣ subLayer1
- ┃ ┗ subLayer2
- ┣ layer2
- ┃ ┣ subLayer1
- ┃ ┣ subLayer2
- ┃ ┣ subOtherLayer
- ┃ layer3
- ┃ ┣ subLayer1
- ┃ ┗ subLayer2
- ┗ otherLayer
-*/
-
 const structure = [
   "layer1/subLayer1",
   "layer1/subLayer2",
-  "layer2/subLayer1",
+  { name: "layer2/subLayer1", interface: true },
   "layer2/subLayer2",
   { name: "node-module", isNodeModule: true },
   "layer3/subLayer1",
@@ -71,6 +56,16 @@ ruleTester.run("lower-level-imports", rule, {
       code: "import { func } from 'node-module'",
       filename: "./src/layer2/subLayer1.js",
       options: [{ structure, root: "./src" }],
+    },
+    {
+      code: "import { func } from '@/layer2/subLayer1'",
+      filename: "./src/layer1/subLayer2.js",
+      options: [{ structure, root: "./src", aliases: { "@": "./src" } }],
+    },
+    {
+      code: "import { func } from '@/layer3/subLayer1'",
+      filename: "./src/layer2/subLayer1.js",
+      options: [{ structure, root: "./src", aliases: { "@": "./src" } }],
     },
     // -------------------------------------------
     // {
@@ -141,7 +136,7 @@ ruleTester.run("lower-level-imports", rule, {
       options: [{ structure, root: "./src" }],
       errors: [
         {
-          messageId: "not-lower-level",
+          messageId: "not-registered:file",
           data: { module: "otherLayerB", file: "otherLayerA" },
         },
       ],
@@ -154,6 +149,17 @@ ruleTester.run("lower-level-imports", rule, {
         {
           messageId: "not-lower-level",
           data: { module: "node-module", file: "layer3/subLayer1" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/layer2/subLayer2'",
+      filename: "./src/layer1/subLayer2.js",
+      options: [{ structure, root: "./src", aliases: { "@": "./src" } }],
+      errors: [
+        {
+          messageId: "interface",
+          data: { module: "layer2/subLayer2", file: "layer1/subLayer2" },
         },
       ],
     },
