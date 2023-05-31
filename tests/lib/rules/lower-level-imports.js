@@ -67,6 +67,11 @@ ruleTester.run("lower-level-imports", rule, {
       filename: "./src/layer2/subLayer1.js",
       options: [{ structure, root: "./src", aliases: { "@": "./src" } }],
     },
+    {
+      code: "import { func } from './otherLayerB'",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src", exclude: ["**/otherLayerA.js"] }],
+    },
     // -------------------------------------------
     // {
     //   code: "import { func } from '../layer2/subLayer1'",
