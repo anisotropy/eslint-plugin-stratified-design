@@ -77,6 +77,11 @@ ruleTester.run("lower-level-imports", rule, {
       filename: "./src/1 otherLayerA.js",
       options: [{ structure, root: "./src", useLevelNumber: true }],
     },
+    {
+      code: "import { func } from './1 otherSubLayerB'",
+      filename: "./src/otherLayerA/index.js",
+      options: [{ structure, root: "./src", useLevelNumber: true }],
+    },
   ],
   invalid: [
     {
