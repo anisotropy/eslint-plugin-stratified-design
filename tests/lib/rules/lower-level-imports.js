@@ -48,6 +48,11 @@ ruleTester.run("lower-level-imports", rule, {
       options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
     },
     {
+      code: "import { func } from '@/layer1/subLayer2/otherLayerB'",
+      filename: "./src/layer1/subLayer1/otherLayerA.js",
+      options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
+    },
+    {
       code: "import { func } from 'node-module'",
       filename: "./src/otherLayerA.js",
       options: [{ structure, root: "./src" }],
@@ -114,6 +119,27 @@ ruleTester.run("lower-level-imports", rule, {
         {
           messageId: "interface",
           data: { module: "layer2/subLayer2", file: "layer1/subLayer2" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/layer3/subLayer2/1 otherLayerA'",
+      filename: "./src/layer3/subLayer1.js",
+      options: [
+        {
+          structure,
+          useLevelNumber: true,
+          root: "./src",
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "interface",
+          data: {
+            module: "subLayer2/1 otherLayerA",
+            file: "layer3/subLayer1",
+          },
         },
       ],
     },
