@@ -48,6 +48,11 @@ ruleTester.run("lower-level-imports", rule, {
       options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
     },
     {
+      code: "import { func } from '@/layer1/subLayer2/otherLayerA'",
+      filename: "./src/layer1/subLayer1.js",
+      options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
+    },
+    {
       code: "import { func } from '@/layer1/subLayer2/otherLayerB'",
       filename: "./src/layer1/subLayer1/otherLayerA.js",
       options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
@@ -96,7 +101,7 @@ ruleTester.run("lower-level-imports", rule, {
       errors: [
         {
           messageId: "not-registered:file",
-          data: { module: "otherLayerB", file: "otherLayerA" },
+          data: { module: "./otherLayerB", file: "./otherLayerA" },
         },
       ],
     },
@@ -107,7 +112,7 @@ ruleTester.run("lower-level-imports", rule, {
       errors: [
         {
           messageId: "not-lower-level",
-          data: { module: "node-module", file: "layer3/subLayer1" },
+          data: { module: "node-module", file: "./layer3/subLayer1" },
         },
       ],
     },
@@ -118,7 +123,7 @@ ruleTester.run("lower-level-imports", rule, {
       errors: [
         {
           messageId: "interface",
-          data: { module: "layer2/subLayer2", file: "layer1/subLayer2" },
+          data: { module: "./layer2/subLayer2", file: "./layer1/subLayer2" },
         },
       ],
     },
@@ -137,8 +142,8 @@ ruleTester.run("lower-level-imports", rule, {
         {
           messageId: "interface",
           data: {
-            module: "layer3/subLayer2/1 otherLayerA",
-            file: "layer3/subLayer1",
+            module: "./layer3/subLayer2/1 otherLayerA",
+            file: "./layer3/subLayer1",
           },
         },
       ],
