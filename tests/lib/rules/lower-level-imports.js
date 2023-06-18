@@ -137,7 +137,7 @@ ruleTester.run("lower-level-imports", rule, {
         {
           messageId: "interface",
           data: {
-            module: "subLayer2/1 otherLayerA",
+            module: "layer3/subLayer2/1 otherLayerA",
             file: "layer3/subLayer1",
           },
         },
