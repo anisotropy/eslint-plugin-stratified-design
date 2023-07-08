@@ -92,6 +92,42 @@ ruleTester.run("lower-level-imports", rule, {
       filename: "./src/otherLayerA/index.js",
       options: [{ structure, root: "./src", useLevelNumber: true }],
     },
+    {
+      code: "import { func } from '@/component/99 library'",
+      filename: "./src/component/1 layer/CompA/index.ts",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/component/99 library'",
+      filename: "./src/component/1 layer/CompA/1 style.tsx",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/component/1 layer/2 style'",
+      filename: "./src/component/1 layer/1 style.tsx",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -144,6 +180,90 @@ ruleTester.run("lower-level-imports", rule, {
           data: {
             module: "./layer3/subLayer2/1 otherLayerA",
             file: "./layer3/subLayer1",
+          },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/layer3/subLayer2/1 otherLayerA'",
+      filename: "./src/layer3/subLayer1/1 otherLayerA",
+      options: [
+        {
+          structure,
+          useLevelNumber: true,
+          root: "./src",
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "interface",
+          data: {
+            module: "./layer3/subLayer2/1 otherLayerA",
+            file: "./layer3/subLayer1/1 otherLayerA",
+          },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/component/2 layer/CompA'",
+      filename: "./src/component/1 layer.ts",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "interface",
+          data: {
+            module: "./component/2 layer/CompA",
+            file: "./component/1 layer",
+          },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/component/1 layer/1 style'",
+      filename: "./src/component/1 layer/2 style.ts",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "not-lower-level",
+          data: {
+            module: "./component/1 layer/1 style",
+            file: "./component/1 layer/2 style",
+          },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/component/2 layer/1 style'",
+      filename: "./src/component/1 layer/1 style.ts",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "interface",
+          data: {
+            module: "./component/2 layer/1 style",
+            file: "./component/1 layer/1 style",
           },
         },
       ],
