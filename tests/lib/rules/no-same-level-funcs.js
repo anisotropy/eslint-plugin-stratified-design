@@ -20,29 +20,27 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run("no-same-level-funcs", rule, {
-  valid: [
-    // { code: "function func1(){ function func2(){} func2() }" }
-  ],
+  valid: [{ code: "function func1(){ function func2(){} func2() }" }],
   invalid: [
-    // {
-    //   code: "function func1(){}; function func2(){ func1(); }",
-    //   errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
-    // },
-    // {
-    //   code: "function func2(){ func1(); }; function func1(){}",
-    //   errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
-    // },
-    // {
-    //   code: "const func1 = () => {}; const func2 = () => { func1(); }",
-    //   errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
-    // },
-    // {
-    //   code: "const func1 = function(){}; const func2 = function(){ func1(); }",
-    //   errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
-    // },
-    // {
-    //   code: "const func1 = function func1(){}; const func2 = function func2(){ func1(); }",
-    //   errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
-    // },
+    {
+      code: "function func1(){}; function func2(){ func1(); }",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
+    {
+      code: "function func2(){ func1(); }; function func1(){}",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
+    {
+      code: "const func1 = () => {}; const func2 = () => { func1(); }",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
+    {
+      code: "const func1 = function(){}; const func2 = function(){ func1(); }",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
+    {
+      code: "const func1 = function func1(){}; const func2 = function func2(){ func1(); }",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
   ],
 });
