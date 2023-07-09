@@ -3,6 +3,6 @@
     "lint": "eslint '**/*.{js,ts}'"
   },
   "devDependencies": {
-    "@anisotropy/eslint-plugin-stratified-design": "file:../"
+    "eslint-plugin-stratified-design": "file:../"
   }
 }

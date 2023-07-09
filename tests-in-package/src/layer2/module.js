@@ -1,3 +1,3 @@
-import { func } from "../layer1/module"; // lint error occurs!!
+import { func } from "../layer2/module"; // lint error occurs!!
 
 func();
