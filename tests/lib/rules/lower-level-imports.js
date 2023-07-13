@@ -79,8 +79,33 @@ ruleTester.run("lower-level-imports", rule, {
     },
     {
       code: "import { func } from './otherLayerB'",
-      filename: "./src/otherLayerA.js",
-      options: [{ structure, root: "./src", exclude: ["**/otherLayerA.js"] }],
+      filename: "./src/otherLayerA.test.js",
+      options: [
+        {
+          structure,
+          root: "./src",
+          exclude: ["**/*.{test,spec}.{js,ts,jsx,tsx}"],
+        },
+      ],
+    },
+    {
+      code: "import { func } from './otherLayerB'",
+      filename: "./src/otherLayerA.test.js",
+      options: [
+        { structure, root: "./src", include: ["**/*.{js,ts,jsx,tsx}"] },
+      ],
+    },
+    {
+      code: "import { func } from './otherLayerB'",
+      filename: "./src/otherLayerA.test.js",
+      options: [
+        {
+          structure,
+          root: "./src",
+          include: ["**/*.js"],
+          exclude: ["**/otherLayerA.test.js"],
+        },
+      ],
     },
     {
       code: "import { func } from './2 otherLayerB'",
@@ -186,7 +211,7 @@ ruleTester.run("lower-level-imports", rule, {
     },
     {
       code: "import { func } from '@/layer3/subLayer2/1 otherLayerA'",
-      filename: "./src/layer3/subLayer1/1 otherLayerA",
+      filename: "./src/layer3/subLayer1/1 otherLayerA.js",
       options: [
         {
           structure,
