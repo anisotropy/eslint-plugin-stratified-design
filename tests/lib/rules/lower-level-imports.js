@@ -118,8 +118,25 @@ ruleTester.run("lower-level-imports", rule, {
       options: [{ structure, root: "./src", useLevelNumber: true }],
     },
     {
+      code: "import { func } from './1 otherSubLayerB'",
+      filename: "./src/otherLayerA/subLayer.js",
+      options: [{ structure, root: "./src", useLevelNumber: true }],
+    },
+    {
       code: "import { func } from '@/component/99 library'",
       filename: "./src/component/1 layer/CompA/index.ts",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/component/99 library'",
+      filename: "./src/component/1 layer/CompA/ComponentA.ts",
       options: [
         {
           structure,
