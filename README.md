@@ -31,7 +31,7 @@ Then configure the rules you wish to use under the rules section:
 ```json
 {
   "rules": {
-    "stratified-design/rule-name": ["error"]
+    "stratified-design/[rule-name]": ["error"]
   }
 }
 ```
