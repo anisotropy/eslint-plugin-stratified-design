@@ -1,42 +1,42 @@
 # eslint-plugin-stratified-design
 
-ESlint rules for stratified design. It is inspired by "[Grokking Simplicity](https://grokkingsimplicity.com)" written by Erick Normand and for practicing stratified design.
+ESLint rules for stratified design, inspired by "[Grokking Simplicity](https://grokkingsimplicity.com)" written by Erick Normand, for practicing stratified design.
 
 ## Installation
 
-You'll first need to install [ESLint](https://eslint.org/):
+First, ensure you have [ESLint](https://eslint.org/) installed:
 
 ```sh
 npm i eslint --save-dev
 ```
 
-Next, install `@anisotropy/eslint-plugin-stratified-design`:
+Next, install `eslint-plugin-stratified-design`:
 
 ```sh
-npm install @anisotropy/eslint-plugin-stratified-design --save-dev
+npm install eslint-plugin-stratified-design --save-dev
 ```
 
 ## Usage
 
-Add `@anisotropy/stratified-design` to the plugins section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-`:
+Add `stratified-design` to the plugins section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-` prefix:
 
 ```json
 {
-  "plugins": ["@anisotropy/stratified-design"]
+  "plugins": ["stratified-design"]
 }
 ```
 
-Then configure the rules you want to use under the rules section.
+Then configure the rules you wish to use under the rules section:
 
 ```json
 {
   "rules": {
-    "@anisotropy/stratified-design/rule-name": ["error"]
+    "stratified-design/rule-name": ["error"]
   }
 }
 ```
 
 ## Supported Rules
 
-- [lower-level-imports](https://github.com/anisotropy/eslint-plugin-stratified-design/blob/main/docs/rules/lower-level-imports.md): Require that lower level modules be imported
-- [no-same-level-funcs](https://github.com/anisotropy/eslint-plugin-stratified-design/blob/main/docs/rules/no-same-level-funcs.md): Disallow calling functions in the same file
+- [lower-level-imports](https://github.com/anisotropy/eslint-plugin-stratified-design/blob/main/docs/rules/lower-level-imports.md): Requires lower-level modules to be imported.
+- [no-same-level-funcs](https://github.com/anisotropy/eslint-plugin-stratified-design/blob/main/docs/rules/no-same-level-funcs.md): Disallows calling functions in the same file.
