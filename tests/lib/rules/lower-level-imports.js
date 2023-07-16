@@ -15,38 +15,16 @@ const rule = require("../../../lib/rules/lower-level-imports"),
 // Tests
 //------------------------------------------------------------------------------
 
-/* 
-src
- ┣ layer1
- ┃ ┣ subLayer1
- ┃ ┗ subLayer2
- ┣ layer2
- ┃ ┣ subLayer1
- ┃ ┣ subLayer2
- ┃ ┣ subOtherLayer
- ┃ layer3
- ┃ ┣ subLayer1
- ┃ ┗ subLayer2
- ┗ otherLayer
-*/
-
-const structure = {
-  "/": ["layer1", "layer2", "layer3"],
-  "/layer1": ["subLayer1", "subLayer2"],
-  "/layer2": ["subLayer1", "subLayer2"],
-  "/layer3": ["subLayer1", "subLayer2", "subLayer3"],
-};
-
-const structureWithOptions = {
-  "/": ["layer1", { name: "layer2", interface: true }, "layer3"],
-  "/layer1": ["subLayer1", "subLayer2"],
-  "/layer2": [
-    "subLayer1",
-    "subLayer2",
-    { name: "nodeModule", isNodeModule: true },
-  ],
-  "/layer3": ["subLayer1", { name: "subLayer2", interface: true }, "subLayer3"],
-};
+const structure = [
+  "layer1/subLayer1",
+  "layer1/subLayer2",
+  { name: "layer2/subLayer1", interface: true },
+  "layer2/subLayer2",
+  { name: "node-module", isNodeModule: true },
+  "layer3/subLayer1",
+  "layer3/subLayer2",
+  "layer3/subLayer3",
+];
 
 const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 2022, sourceType: "module" },
@@ -55,172 +33,282 @@ const ruleTester = new RuleTester({
 ruleTester.run("lower-level-imports", rule, {
   valid: [
     {
-      code: "import { func } from './subLayer1/module'",
-      filename: "./src/layer1/module.js",
+      code: "import { func } from './otherLayerB/otherSubLayer'",
+      filename: "./src/otherLayerA.js",
       options: [{ structure, root: "./src" }],
     },
     {
-      code: "import { func } from './subOtherLayer/module'",
-      filename: "./src/layer2/module.js",
+      code: "import { func } from '../layer1/subLayer2'",
+      filename: "./src/layer1/subLayer1.js",
       options: [{ structure, root: "./src" }],
     },
     {
-      code: "import { func } from '../../layer2/module'",
-      filename: "./src/layer1/subLayer1/module.js",
+      code: "import { func } from '@/layer1/subLayer2'",
+      filename: "./src/layer1/subLayer1.js",
+      options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
+    },
+    {
+      code: "import { func } from '@/layer1/subLayer2/otherLayerA'",
+      filename: "./src/layer1/subLayer1.js",
+      options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
+    },
+    {
+      code: "import { func } from '@/layer1/subLayer2/otherLayerB'",
+      filename: "./src/layer1/subLayer1/otherLayerA.js",
+      options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
+    },
+    {
+      code: "import { func } from 'node-module'",
+      filename: "./src/otherLayerA.js",
       options: [{ structure, root: "./src" }],
     },
     {
-      code: "import { func } from '../../layer2/subLayer1/module'",
-      filename: "./src/layer1/subLayer1/module.js",
+      code: "import { func } from 'node-module'",
+      filename: "./src/layer2/subLayer1.js",
       options: [{ structure, root: "./src" }],
     },
     {
-      code: "import { func } from '../layer1/module'",
-      filename: "./src/layer2/module.test.js",
-      options: [{ structure, root: "./src" }],
+      code: "import { func } from '@/layer2/subLayer1'",
+      filename: "./src/layer1/subLayer2.js",
+      options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
     },
     {
-      code: "import { func } from '../layer2/module'",
-      filename: "./src/layer1/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
+      code: "import { func } from '@/layer3/subLayer1'",
+      filename: "./src/layer2/subLayer1.js",
+      options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
     },
     {
-      code: "import { func } from '../../layer2/module'",
-      filename: "./src/layer1/subLayer1/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
+      code: "import { func } from './otherLayerB'",
+      filename: "./src/otherLayerA.test.js",
+      options: [
+        {
+          structure,
+          root: "./src",
+          exclude: ["**/*.{test,spec}.{js,ts,jsx,tsx}"],
+        },
+      ],
     },
     {
-      code: "import { func } from 'nodeModule'",
-      filename: "./src/layer1/subLayer1/module.js",
-      options: [{ structure, root: "./src" }],
+      code: "import { func } from './otherLayerB'",
+      filename: "./src/otherLayerA.test.js",
+      options: [
+        { structure, root: "./src", include: ["**/*.{js,ts,jsx,tsx}"] },
+      ],
     },
     {
-      code: "import { func } from 'otherNodeModule'",
-      filename: "./src/layer1/subLayer1/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
+      code: "import { func } from './otherLayerB'",
+      filename: "./src/otherLayerA.test.js",
+      options: [
+        {
+          structure,
+          root: "./src",
+          include: ["**/*.js"],
+          exclude: ["**/otherLayerA.test.js"],
+        },
+      ],
     },
     {
-      code: "import { func } from './subLayer2/module'",
-      filename: "./src/layer1/module.js",
-      options: [],
+      code: "import { func } from './2 otherLayerB'",
+      filename: "./src/1 otherLayerA.js",
+      options: [{ structure, root: "./src", useLevelNumber: true }],
     },
     {
-      code: "import { func } from './subLayer1/module'",
-      filename: "./src/layer1/module.js",
-      options: [{ structure, root: "." }],
+      code: "import { func } from './1 otherSubLayerB'",
+      filename: "./src/otherLayerA/index.js",
+      options: [{ structure, root: "./src", useLevelNumber: true }],
     },
     {
-      code: "import { func } from './subLayer1/module'",
-      filename: "./src/layer1/module.js",
-      options: [{ structure, aliases: { "@": "." } }],
+      code: "import { func } from './1 otherSubLayerB'",
+      filename: "./src/otherLayerA/subLayer.js",
+      options: [{ structure, root: "./src", useLevelNumber: true }],
+    },
+    {
+      code: "import { func } from '@/component/99 library'",
+      filename: "./src/component/1 layer/CompA/index.ts",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/component/99 library'",
+      filename: "./src/component/1 layer/CompA/ComponentA.ts",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/component/99 library'",
+      filename: "./src/component/1 layer/CompA/1 style.tsx",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/component/1 layer/2 style'",
+      filename: "./src/component/1 layer/1 style.tsx",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
     },
   ],
   invalid: [
     {
-      code: "import { func } from '../layer1/module'",
-      filename: "./src/layer2/module.js",
+      code: "import { func } from './otherLayerB'",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+      errors: [
+        {
+          messageId: "not-registered:file",
+          data: { module: "./otherLayerB", file: "./otherLayerA" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from 'node-module'",
+      filename: "./src/layer3/subLayer1.js",
       options: [{ structure, root: "./src" }],
       errors: [
         {
           messageId: "not-lower-level",
-          data: { module: "layer1", file: "layer2" },
+          data: { module: "node-module", file: "./layer3/subLayer1" },
         },
       ],
     },
     {
-      code: "import { func } from '../subLayer1/module'",
-      filename: "./src/layer1/subLayer2/module.js",
-      options: [{ structure, root: "./src" }],
-      errors: [{ messageId: "not-lower-level" }],
-    },
-    {
-      code: "import { func } from '../subOtherLayer/module'",
-      filename: "./src/layer2/subLayer1/module.js",
-      options: [{ structure, root: "./src" }],
-      errors: [{ messageId: "not-lower-level" }],
-    },
-    {
-      code: "import { func } from '../../layer3/module'",
-      filename: "./src/layer1/subLayer1/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
+      code: "import { func } from '@/layer2/subLayer2'",
+      filename: "./src/layer1/subLayer2.js",
+      options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
       errors: [
         {
           messageId: "interface",
-          data: { module: "layer3", file: "subLayer1" },
+          data: { module: "./layer2/subLayer2", file: "./layer1/subLayer2" },
         },
       ],
     },
     {
-      code: "import { func } from '../subLayer3/module'",
-      filename: "./src/layer3/subLayer1/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
-      errors: [{ messageId: "interface" }],
+      code: "import { func } from '@/layer3/subLayer2/1 otherLayerA'",
+      filename: "./src/layer3/subLayer1.js",
+      options: [
+        {
+          structure,
+          useLevelNumber: true,
+          root: "./src",
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "interface",
+          data: {
+            module: "./layer3/subLayer2/1 otherLayerA",
+            file: "./layer3/subLayer1",
+          },
+        },
+      ],
     },
     {
-      code: "import { func } from '../../layer3/subLayer3/module'",
-      filename: "./src/layer2/subLayer1/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
-      errors: [{ messageId: "interface" }],
+      code: "import { func } from '@/layer3/subLayer2/1 otherLayerA'",
+      filename: "./src/layer3/subLayer1/1 otherLayerA.js",
+      options: [
+        {
+          structure,
+          useLevelNumber: true,
+          root: "./src",
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "interface",
+          data: {
+            module: "./layer3/subLayer2/1 otherLayerA",
+            file: "./layer3/subLayer1/1 otherLayerA",
+          },
+        },
+      ],
     },
     {
-      code: "import { func } from '../layer2/subLayer1/module'",
-      filename: "./src/layer1/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
-      errors: [{ messageId: "interface" }],
+      code: "import { func } from '@/component/2 layer/CompA'",
+      filename: "./src/component/1 layer.ts",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "interface",
+          data: {
+            module: "./component/2 layer/CompA",
+            file: "./component/1 layer",
+          },
+        },
+      ],
     },
     {
-      code: "import { func } from '../../layer2/subLayer1/module'",
-      filename: "./src/layer1/subLayer1/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
-      errors: [{ messageId: "interface" }],
+      code: "import { func } from '@/component/1 layer/1 style'",
+      filename: "./src/component/1 layer/2 style.ts",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "not-lower-level",
+          data: {
+            module: "./component/1 layer/1 style",
+            file: "./component/1 layer/2 style",
+          },
+        },
+      ],
     },
     {
-      code: "import { func } from '../layer3/subLayer1/module'",
-      filename: "./src/layer1/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
-      errors: [{ messageId: "interface" }],
-    },
-    {
-      code: "import { func } from '@/layer1/subLayer1/module'",
-      filename: "./src/layer2/module.js",
-      options: [{ structure, root: "./src", aliases: { "@": "./src" } }],
-      errors: [{ messageId: "not-lower-level" }],
-    },
-    {
-      code: "import { func } from '@/otherLayer/module'",
-      filename: "./src/layer2/module.js",
-      options: [{ structure, root: "./src", aliases: { "@": "./src" } }],
-      errors: [{ messageId: "not-lower-level" }],
-    },
-    {
-      code: "import { func } from 'nodeModule'",
-      filename: "./src/layer3/subLayer2/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
-      errors: [{ messageId: "not-lower-level" }],
-    },
-    {
-      code: "import { func } from 'nodeModule/path/to'",
-      filename: "./src/layer3/subLayer2/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
-      errors: [{ messageId: "not-lower-level" }],
-    },
-    {
-      code: "import { func } from 'nodeModule/path/to'",
-      filename: "./src/layer1/subLayer2/module.js",
-      options: [{ structure: structureWithOptions, root: "./src" }],
-      errors: [{ messageId: "interface" }],
-    },
-    {
-      code: "import { func } from '../layer2/module'",
-      filename: "./src/layer1/module.js",
-      options: [],
-      errors: [{ messageId: "not-lower-level" }],
-    },
-    {
-      code: "import { func } from '@/layer2/module'",
-      filename: "./src/layer1/module.js",
-      options: [{ aliases: { "@": "./src" } }],
-      errors: [{ messageId: "not-lower-level" }],
+      code: "import { func } from '@/component/2 layer/1 style'",
+      filename: "./src/component/1 layer/1 style.ts",
+      options: [
+        {
+          structure,
+          root: "./src",
+          useLevelNumber: true,
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "interface",
+          data: {
+            module: "./component/2 layer/1 style",
+            file: "./component/1 layer/1 style",
+          },
+        },
+      ],
     },
   ],
 });

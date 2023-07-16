@@ -1,6 +1,6 @@
 {
-  "name": "@anisotropy/eslint-plugin-stratified-design",
-  "version": "0.3.2",
+  "name": "eslint-plugin-stratified-design",
+  "version": "0.4.0",
   "description": "ESlint rules for stratified design",
   "keywords": [
     "eslint",
@@ -22,6 +22,7 @@
     "test": "mocha tests --recursive"
   },
   "dependencies": {
+    "minimatch": "^9.0.1",
     "requireindex": "^1.2.0"
   },
   "devDependencies": {

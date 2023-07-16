@@ -1,3 +1,3 @@
-export function func(a) {
-  return a;
-}
+import { func } from "../layer3/1 lib"; // lint error occurs!!
+
+func(1);
