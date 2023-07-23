@@ -18,7 +18,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Update package version
-        run: npm versioning
+        run: npm run versioning
 
       - name: Commit and push package.json
         run: |
