@@ -20,7 +20,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha tests --recursive",
-    "versioning": "./scripts/versioning"
+    "versioning": "node ./scripts/versioning"
   },
   "dependencies": {
     "minimatch": "^9.0.1",
