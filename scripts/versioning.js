@@ -20,7 +20,7 @@ function updatePackageVersion() {
     try {
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
       packageJson.version = version;
-      const updatedPackageJson = JSON.stringify(packageJson, null, 2) + "/n";
+      const updatedPackageJson = JSON.stringify(packageJson, null, 2) + "\n";
       return updatedPackageJson;
     } catch (error) {
       throw new Error("Error parsing package.json:", error);
