@@ -22,21 +22,21 @@ The syntax to specify the level structure is as follows:
 
 In the folder array, the file or folder on the left is considered to be at a higher level than the one on the right.
 
-To designate a layer as an interface layer, set `interface` to `true`:
+To designate a layer as an abstract barrier, set `barrier` to `true`:
 
 ```json
 "lower-level-imports": ["error", {
-  "structure": ["layer1", { "name": "layer2", "interface": true }, "layer3"],
+  "structure": ["layer1", { "name": "layer2", "barrier": true }, "layer3"],
 }]
 ```
 
-For the 'interface layer,' refer to "[Grokking Simplicity](https://grokkingsimplicity.com)."
+For the 'abstract barrier,' refer to "[Grokking Simplicity](https://grokkingsimplicity.com)."
 
-To locate a node module in the structure, set `isNodeModule` to `true`:
+To locate a node module in the structure, set `nodeModule` to `true`:
 
 ```json
 "lower-level-imports": ["error", {
-  "structure": ["layer1", { "name": "nodeModule", "isNodeModule": true }, "layer3"],
+  "structure": ["layer1", { "name": "nodeModule", "nodeModule": true }, "layer3"],
 }]
 ```
 
@@ -120,7 +120,7 @@ import { func } from "../layer1";
 
 ```js
 /* "lower-level-imports": ["error", {
-  "structure": ["layer1", { name: "layer2", interface: true }, "layer3"]
+  "structure": ["layer1", { name: "layer2", barrier: true }, "layer3"]
 }] */
 // ./src/layer1.js
 import { func } from "../layer3/entry";
@@ -128,7 +128,7 @@ import { func } from "../layer3/entry";
 
 ```js
 /* "lower-level-imports": ["error", {
-  "structure":  ["layer1", { "name": "nodeModule", "isNodeModule": true }, "layer3"],
+  "structure":  ["layer1", { "name": "nodeModule", "nodeModule": true }, "layer3"],
 }] */
 // ./src/layer3/entry.js
 import { func } from "nodeModule";
