@@ -18,9 +18,9 @@ const rule = require("../../../lib/rules/lower-level-imports"),
 const structure = [
   "layer1/subLayer1",
   "layer1/subLayer2",
-  { name: "layer2/subLayer1", interface: true },
+  { name: "layer2/subLayer1", barrier: true },
   "layer2/subLayer2",
-  { name: "node-module", isNodeModule: true },
+  { name: "node-module", nodeModule: true },
   "layer3/subLayer1",
   "layer3/subLayer2",
   "layer3/subLayer3",
@@ -200,7 +200,7 @@ ruleTester.run("lower-level-imports", rule, {
       options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
       errors: [
         {
-          messageId: "interface",
+          messageId: "barrier",
           data: { module: "./layer2/subLayer2", file: "./layer1/subLayer2" },
         },
       ],
@@ -218,7 +218,7 @@ ruleTester.run("lower-level-imports", rule, {
       ],
       errors: [
         {
-          messageId: "interface",
+          messageId: "barrier",
           data: {
             module: "./layer3/subLayer2/1 otherLayerA",
             file: "./layer3/subLayer1",
@@ -239,7 +239,7 @@ ruleTester.run("lower-level-imports", rule, {
       ],
       errors: [
         {
-          messageId: "interface",
+          messageId: "barrier",
           data: {
             module: "./layer3/subLayer2/1 otherLayerA",
             file: "./layer3/subLayer1/1 otherLayerA",
@@ -260,7 +260,7 @@ ruleTester.run("lower-level-imports", rule, {
       ],
       errors: [
         {
-          messageId: "interface",
+          messageId: "barrier",
           data: {
             module: "./component/2 layer/CompA",
             file: "./component/1 layer",
@@ -302,7 +302,7 @@ ruleTester.run("lower-level-imports", rule, {
       ],
       errors: [
         {
-          messageId: "interface",
+          messageId: "barrier",
           data: {
             module: "./component/2 layer/1 style",
             file: "./component/1 layer/1 style",
