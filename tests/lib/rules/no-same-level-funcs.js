@@ -20,26 +20,55 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run("no-same-level-funcs", rule, {
-  valid: [{ code: "function func1(){ function func2(){} func2() }" }],
+  valid: [
+    {
+      code: "function func1(){ function func2(){} func2() }",
+      filename: "./src/foo.js",
+    },
+    {
+      code: "function func1(){}; function func2(){ func1(); }",
+      filename: "./src/foo.test.js",
+    },
+    {
+      code: "function func1(){}; function func2(){ func1(); }",
+      filename: "./src/foo.js",
+      options: [{ exclude: ["**/foo.js"] }],
+    },
+    {
+      code: "function func1(){}; function func2(){ func1(); }",
+      filename: "./src/foo.js",
+      options: [{ include: ["**/*.ts"] }],
+    },
+    {
+      code: "function func1(){}; function func2(){ func1(); }",
+      filename: "./src/foo.js",
+      options: [{ include: ["**/src/**/*.*"], exclude: ["**/foo.js"] }],
+    },
+  ],
   invalid: [
     {
       code: "function func1(){}; function func2(){ func1(); }",
+      filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
     {
       code: "function func2(){ func1(); }; function func1(){}",
+      filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
     {
       code: "const func1 = () => {}; const func2 = () => { func1(); }",
+      filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
     {
       code: "const func1 = function(){}; const func2 = function(){ func1(); }",
+      filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
     {
       code: "const func1 = function func1(){}; const func2 = function func2(){ func1(); }",
+      filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
   ],
