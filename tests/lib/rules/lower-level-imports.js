@@ -187,6 +187,18 @@ ruleTester.run("lower-level-imports", rule, {
         },
       ],
     },
+    {
+      code: "import { func } from '@/layer1/subLayer2/sub'",
+      filename: "./src/layer1/subLayer1/1 layer.js",
+      options: [
+        {
+          structure,
+          root: "./src",
+          aliases: { "@/": "./src/" },
+          useLevelNumber: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
