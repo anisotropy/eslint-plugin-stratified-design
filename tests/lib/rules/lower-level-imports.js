@@ -58,7 +58,7 @@ ruleTester.run("lower-level-imports", rule, {
       options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
     },
     {
-      code: "import { func } from 'node-module'",
+      code: "import { func } from 'other-node-module'",
       filename: "./src/otherLayerA.js",
       options: [{ structure, root: "./src" }],
     },
@@ -167,6 +167,23 @@ ruleTester.run("lower-level-imports", rule, {
           root: "./src",
           useLevelNumber: true,
           aliases: { "@/": "./src/" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from 'other-node-module'",
+      filename: "./src/1 otherLayerA.js",
+      options: [{ structure, root: "./src", useLevelNumber: true }],
+    },
+    {
+      code: "import { func } from 'node-module'",
+      filename: "./src/layer2/subLayer1/1 layer.js",
+      options: [
+        {
+          structure,
+          root: "./src",
+          aliases: { "@/": "./src/" },
+          useLevelNumber: true,
         },
       ],
     },
@@ -307,6 +324,17 @@ ruleTester.run("lower-level-imports", rule, {
             module: "./component/2 layer/1 style",
             file: "./component/1 layer/1 style",
           },
+        },
+      ],
+    },
+    {
+      code: "import { func } from 'node-module'",
+      filename: "./src/layer3/subLayer1/1 layer.js",
+      options: [{ structure, root: "./src", useLevelNumber: true }],
+      errors: [
+        {
+          messageId: "not-lower-level",
+          data: { module: "node-module", file: "./layer3/subLayer1/1 layer" },
         },
       ],
     },
