@@ -362,5 +362,22 @@ ruleTester.run("lower-level-imports", rule, {
         },
       ],
     },
+    {
+      code: "import { func } from '@/other/file.js'",
+      filename: "./src/other/index.js",
+      options: [
+        {
+          structure,
+          root: "./src",
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "not-registered:file",
+          data: { module: "./other/file.js", file: "./other/index" },
+        },
+      ],
+    },
   ],
 });
