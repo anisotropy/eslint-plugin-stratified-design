@@ -38,6 +38,21 @@ ruleTester.run("lower-level-imports", rule, {
       options: [{ structure, root: "./src" }],
     },
     {
+      code: "export { func } from './otherLayerB/otherSubLayer'",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+    },
+    {
+      code: "export * from './otherLayerB/otherSubLayer'",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+    },
+    {
+      code: "const func = () => null; export { func }; ",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+    },
+    {
       code: "import { func } from '../layer1/subLayer2'",
       filename: "./src/layer1/subLayer1.js",
       options: [{ structure, root: "./src" }],
@@ -199,10 +214,44 @@ ruleTester.run("lower-level-imports", rule, {
         },
       ],
     },
+    {
+      code: "import { func } from '@/other/file.js'",
+      filename: "./src/other/index.js",
+      options: [
+        {
+          structure,
+          root: "./src",
+          aliases: { "@/": "./src/" },
+          isIndexHighest: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
       code: "import { func } from './otherLayerB'",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+      errors: [
+        {
+          messageId: "not-registered:file",
+          data: { module: "./otherLayerB", file: "./otherLayerA" },
+        },
+      ],
+    },
+    {
+      code: "export { func } from './otherLayerB'",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+      errors: [
+        {
+          messageId: "not-registered:file",
+          data: { module: "./otherLayerB", file: "./otherLayerA" },
+        },
+      ],
+    },
+    {
+      code: "export * from './otherLayerB'",
       filename: "./src/otherLayerA.js",
       options: [{ structure, root: "./src" }],
       errors: [
@@ -347,6 +396,23 @@ ruleTester.run("lower-level-imports", rule, {
         {
           messageId: "not-lower-level",
           data: { module: "node-module", file: "./layer3/subLayer1/1 layer" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '@/other/file.js'",
+      filename: "./src/other/index.js",
+      options: [
+        {
+          structure,
+          root: "./src",
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "not-registered:file",
+          data: { module: "./other/file.js", file: "./other/index" },
         },
       ],
     },
