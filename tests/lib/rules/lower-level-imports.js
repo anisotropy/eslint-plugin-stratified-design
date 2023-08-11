@@ -38,6 +38,21 @@ ruleTester.run("lower-level-imports", rule, {
       options: [{ structure, root: "./src" }],
     },
     {
+      code: "export { func } from './otherLayerB/otherSubLayer'",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+    },
+    {
+      code: "export * from './otherLayerB/otherSubLayer'",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+    },
+    {
+      code: "const func = () => null; export { func }; ",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+    },
+    {
       code: "import { func } from '../layer1/subLayer2'",
       filename: "./src/layer1/subLayer1.js",
       options: [{ structure, root: "./src" }],
