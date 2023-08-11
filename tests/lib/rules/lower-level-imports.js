@@ -225,6 +225,28 @@ ruleTester.run("lower-level-imports", rule, {
       ],
     },
     {
+      code: "export { func } from './otherLayerB'",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+      errors: [
+        {
+          messageId: "not-registered:file",
+          data: { module: "./otherLayerB", file: "./otherLayerA" },
+        },
+      ],
+    },
+    {
+      code: "export * from './otherLayerB'",
+      filename: "./src/otherLayerA.js",
+      options: [{ structure, root: "./src" }],
+      errors: [
+        {
+          messageId: "not-registered:file",
+          data: { module: "./otherLayerB", file: "./otherLayerA" },
+        },
+      ],
+    },
+    {
       code: "import { func } from 'node-module'",
       filename: "./src/layer3/subLayer1.js",
       options: [{ structure, root: "./src" }],
