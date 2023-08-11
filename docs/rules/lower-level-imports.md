@@ -66,6 +66,12 @@ If you want to register the level of a layer by 'number,' set the option `useLev
 
 The options `structure` and `useLevelNumber` can be used together.
 
+An `index.xxx` file can be the highest level layer when the option `isIndexHighest` is set to `true`:
+
+```json
+"lower-level-imports": ["error", { "isIndexHighest": true }]
+```
+
 You can register the files to apply the rule (`lower-level-imports`) using the `include` and `exclude` options:
 
 ```json
@@ -179,4 +185,10 @@ import { func } from "./1 layer";
 /* "lower-level-imports": ["error", { "structure": ["layer1", "layer3"], "useLevelNumber": true }] */
 // ./src/layer.js
 import { func } from "../layer3/entry";
+```
+
+```js
+/* "lower-level-imports": ["error", { "isIndexHighest": true }] */
+// ./src/layer/index.js
+import { func } from "./anything";
 ```
