@@ -1,0 +1,11 @@
+[
+  ["layerA"],
+  ["layerB"],
+  [{ "name": "layerC", "barrier": true }],
+  ["layerD"],
+  [{ "name": "nodeModuleE", "nodeModule": "true" }],
+  ["layerF"],
+  ["layerG", "layerH"],
+  ["layerI"],
+  ["layerJ/entryA", "layerJ/entryB"]
+]
