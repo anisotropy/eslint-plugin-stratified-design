@@ -36,6 +36,18 @@ function func3(...) {
 }
 ```
 
+```js
+// @level 1
+const funcA = (...) => { ... }
+
+// @level 2
+const funcB = (...) => {
+  ...
+  funcA(...)
+  ...
+}
+```
+
 Examples of **correct** code for this rule:
 
 ```js
@@ -51,5 +63,17 @@ function func1(...) {
   const func2(...) => { ... };
   ...
   func2(...);
+}
+```
+
+```js
+// @level 2
+const funcA = (...) => { ... }
+
+// @level 1
+const funcB = (...) => {
+  ...
+  funcA(...)
+  ...
 }
 ```

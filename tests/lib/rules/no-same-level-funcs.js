@@ -115,5 +115,15 @@ ruleTester.run("no-same-level-funcs", rule, {
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
+    {
+      code: "// @level 2\nfunction func2(){};\nfunction func1(){ func2(); }",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func2" } }],
+    },
+    {
+      code: "function func2(){};\n// @level 1\nfunction func1(){ func2(); }",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func2" } }],
+    },
   ],
 });
