@@ -60,6 +60,11 @@ ruleTester.run("lower-level-layer-imports", rule, {
       options: [],
     },
     {
+      code: "import { func } from 'notRegisteredNodeModule'",
+      filename: "./mocked/lower-level-layer-imports/layerA.js",
+      options: [],
+    },
+    {
       code: "import { func } from 'nodeModuleE'",
       filename: "./mocked/lower-level-layer-imports/layerD.js",
       options: [],
