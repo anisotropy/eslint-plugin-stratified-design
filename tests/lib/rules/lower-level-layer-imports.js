@@ -145,7 +145,7 @@ ruleTester.run("lower-level-layer-imports", rule, {
       options: [],
       errors: [
         {
-          messageId: "not-registered",
+          messageId: "not-lower-level",
           data: { module: "layerA", file: "layerBA" },
         },
       ],
@@ -167,7 +167,7 @@ ruleTester.run("lower-level-layer-imports", rule, {
       options: [],
       errors: [
         {
-          messageId: "not-registered",
+          messageId: "not-lower-level",
           data: { module: "layerI", file: "layerJC" },
         },
       ],
