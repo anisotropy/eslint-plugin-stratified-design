@@ -104,8 +104,44 @@ ruleTester.run("lower-level-layer-imports", rule, {
       filename: "./mocked/lower-level-layer-imports/layerJ/layerJC.js",
       options: [],
     },
+    {
+      code: "import { func } from '@/layerB'",
+      filename: "./mocked/lower-level-layer-imports/layerA.js",
+      options: [{ aliases: { "@/": "./mocked/lower-level-layer-imports/" } }],
+    },
+    {
+      code: "import { func } from './notRegisteredLayer'",
+      filename: "./mocked/lower-level-layer-imports/layerA.test.js",
+      options: [],
+    },
+    {
+      code: "import { func } from './notRegisteredLayer'",
+      filename: "./mocked/lower-level-layer-imports/layerA.js",
+      options: [{ include: ["**/*.ts"] }],
+    },
+    {
+      code: "import { func } from './notRegisteredLayer'",
+      filename: "./mocked/lower-level-layer-imports/layerA.js",
+      options: [{ exclude: ["**/*.js"] }],
+    },
+    {
+      code: "import { func } from './notRegisteredLayer'",
+      filename: "./mocked/lower-level-layer-imports/layerA.js",
+      options: [{ include: ["**/*.js"], exclude: ["**/layerA.js"] }],
+    },
   ],
   invalid: [
+    {
+      code: "import { func } from './layerA'",
+      filename: "./mocked/lower-level-layer-imports/notRegisteredLayer.js",
+      options: [],
+      errors: [
+        {
+          messageId: "not-registered",
+          data: { file: "notRegisteredLayer" },
+        },
+      ],
+    },
     {
       code: "import { func } from './layerA'",
       filename: "./mocked/lower-level-layer-imports/layerB.js",
