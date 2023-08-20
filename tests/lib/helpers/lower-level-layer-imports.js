@@ -23,8 +23,6 @@ const {
 // Tests
 //------------------------------------------------------------------------------
 
-// TODO: more test for helper
-
 describe("helpers/lower-level-layer-imports", () => {
   describe("toStructure()", () => {
     const fileDir = "/src";
