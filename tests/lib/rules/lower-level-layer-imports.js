@@ -26,7 +26,7 @@ const RuleTester = require("eslint").RuleTester;
   ["layerF"],
   ["layerG", "layerH"],
   ["layerI"],
-  ["layerJ/entryA", "layerJ/entryB"],
+  ["layerJ"],
   ["layerK"]
 ]
 
