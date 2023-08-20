@@ -7,5 +7,6 @@
   ["layerF"],
   ["layerG", "layerH"],
   ["layerI"],
-  ["layerJ/entryA", "layerJ/entryB"]
+  ["layerJ/entryA", "layerJ/entryB"],
+  ["layerK"]
 ]
