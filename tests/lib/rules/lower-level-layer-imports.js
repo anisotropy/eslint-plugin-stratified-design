@@ -129,6 +129,11 @@ ruleTester.run("lower-level-layer-imports", rule, {
       filename: "./mocked/lower-level-layer-imports/layerA.js",
       options: [{ include: ["**/*.js"], exclude: ["**/layerA.js"] }],
     },
+    {
+      code: "import { func } from './layerJ/entryJA'",
+      filename: "./mocked/lower-level-layer-imports/layerI.js",
+      options: [],
+    },
   ],
   invalid: [
     {
@@ -205,6 +210,17 @@ ruleTester.run("lower-level-layer-imports", rule, {
         {
           messageId: "not-lower-level",
           data: { module: "layerI", file: "layerJC" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from './layerJ/notRegisteredEntry'",
+      filename: "./mocked/lower-level-layer-imports/layerI.js",
+      options: [],
+      errors: [
+        {
+          messageId: "not-lower-level",
+          data: { module: "notRegisteredEntry", file: "layerI" },
         },
       ],
     },

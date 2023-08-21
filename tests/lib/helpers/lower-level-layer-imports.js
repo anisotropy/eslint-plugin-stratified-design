@@ -88,7 +88,7 @@ describe("helpers/lower-level-layer-imports", () => {
     const testCases = [
       { path: "/src/layerA", level: 0 },
       { path: "/src/layerB", level: 1 },
-      { path: "/src/layerA/entry", level: 0 },
+      { path: "/src/layerA/entry", level: null },
     ];
     testCases.forEach(({ path, level }) => {
       it(`The level of ${path} is ${level}`, () => {
