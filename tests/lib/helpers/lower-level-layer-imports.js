@@ -11,6 +11,7 @@
 const assert = require("assert");
 const {
   findLevel,
+  findLayerWithSimilarPath,
   toStructure,
   createAliases,
   replaceAlias,
@@ -93,6 +94,20 @@ describe("helpers/lower-level-layer-imports", () => {
     testCases.forEach(({ path, level }) => {
       it(`The level of ${path} is ${level}`, () => {
         assert.equal(findLevel(structure)(path), level);
+      });
+    });
+  });
+
+  describe("findLayerWithSimilarPath()", () => {
+    const structure = [[{ name: "/src/layerA" }], [{ name: "/src/layerB" }]];
+    const testCases = [
+      { path: "/src/layerA", layer: structure[0][0] },
+      { path: "/src/layerB", layer: structure[1][0] },
+      { path: "/src/layerA/entry", layer: structure[0][0] },
+    ];
+    testCases.forEach(({ path, layer }) => {
+      it(`The level of ${path} is ${JSON.stringify(layer)}`, () => {
+        assert.equal(findLayerWithSimilarPath(structure)(path), layer);
       });
     });
   });
