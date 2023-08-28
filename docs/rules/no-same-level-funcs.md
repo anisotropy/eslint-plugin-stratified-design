@@ -7,7 +7,12 @@ This rule prohibits calling functions at the same level in the same file.
 You can register the files to apply the rule (`no-same-level-funcs`) using the `include` and `exclude` options:
 
 ```json
-"no-same-level-funcs": ["error", { "include": ["**/*.js"], "exclude": ["**/*.test.js"] }]
+{
+  "stratified-design/no-same-level-funcs": [
+    "error",
+    { "include": ["**/*.js"], "exclude": ["**/*.test.js"] }
+  ]
+}
 ```
 
 The default is as follows:
