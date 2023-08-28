@@ -1,5 +1,5 @@
 /**
- * @fileoverview test for helpers/lower-level-layer-imports
+ * @fileoverview test for helpers/stratified-imports
  * @author Hodoug Joung
  */
 "use strict";
@@ -24,7 +24,7 @@ const {
 // Tests
 //------------------------------------------------------------------------------
 
-describe("helpers/lower-level-layer-imports", () => {
+describe("helpers/stratified-imports", () => {
   describe("toStructure()", () => {
     const fileDir = "/src";
     const testCases = [

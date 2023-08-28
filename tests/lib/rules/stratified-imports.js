@@ -8,7 +8,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("../../../lib/rules/lower-level-layer-imports");
+const rule = require("../../../lib/rules/stratified-imports");
 const RuleTester = require("eslint").RuleTester;
 
 //------------------------------------------------------------------------------
@@ -47,98 +47,98 @@ const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 2022, sourceType: "module" },
 });
 
-ruleTester.run("lower-level-layer-imports", rule, {
+ruleTester.run("stratified-imports", rule, {
   valid: [
     {
       code: "import { func } from './layerB'",
-      filename: "./mocked/lower-level-layer-imports/layerA.js",
+      filename: "./mocked/stratified-imports/layerA.js",
       options: [],
     },
     {
       code: "import { func } from './layerC'",
-      filename: "./mocked/lower-level-layer-imports/layerA.js",
+      filename: "./mocked/stratified-imports/layerA.js",
       options: [],
     },
     {
       code: "import { func } from 'notRegisteredNodeModule'",
-      filename: "./mocked/lower-level-layer-imports/layerA.js",
+      filename: "./mocked/stratified-imports/layerA.js",
       options: [],
     },
     {
       code: "import { func } from 'nodeModuleE'",
-      filename: "./mocked/lower-level-layer-imports/layerD.js",
+      filename: "./mocked/stratified-imports/layerD.js",
       options: [],
     },
     {
       code: "import { func } from './layerH'",
-      filename: "./mocked/lower-level-layer-imports/layerF.js",
+      filename: "./mocked/stratified-imports/layerF.js",
       options: [],
     },
     {
       code: "import { func } from './layerI'",
-      filename: "./mocked/lower-level-layer-imports/layerH.js",
+      filename: "./mocked/stratified-imports/layerH.js",
       options: [],
     },
     {
       code: "import { func } from './layerBB'",
-      filename: "./mocked/lower-level-layer-imports/layerB/layerBA.js",
+      filename: "./mocked/stratified-imports/layerB/layerBA.js",
       options: [],
     },
     {
       code: "import { func } from '../layerC'",
-      filename: "./mocked/lower-level-layer-imports/layerB/layerBA.js",
+      filename: "./mocked/stratified-imports/layerB/layerBA.js",
       options: [],
     },
     {
       code: "import { func } from './layerJC'",
-      filename: "./mocked/lower-level-layer-imports/layerJ/entryJA.js",
+      filename: "./mocked/stratified-imports/layerJ/entryJA.js",
       options: [],
     },
     {
       code: "import { func } from './layerJC'",
-      filename: "./mocked/lower-level-layer-imports/layerJ/entryJB.js",
+      filename: "./mocked/stratified-imports/layerJ/entryJB.js",
       options: [],
     },
     {
       code: "import { func } from '../layerK'",
-      filename: "./mocked/lower-level-layer-imports/layerJ/layerJC.js",
+      filename: "./mocked/stratified-imports/layerJ/layerJC.js",
       options: [],
     },
     {
       code: "import { func } from '@/layerB'",
-      filename: "./mocked/lower-level-layer-imports/layerA.js",
-      options: [{ aliases: { "@/": "./mocked/lower-level-layer-imports/" } }],
+      filename: "./mocked/stratified-imports/layerA.js",
+      options: [{ aliases: { "@/": "./mocked/stratified-imports/" } }],
     },
     {
       code: "import { func } from './notRegisteredLayer'",
-      filename: "./mocked/lower-level-layer-imports/layerA.test.js",
+      filename: "./mocked/stratified-imports/layerA.test.js",
       options: [],
     },
     {
       code: "import { func } from './notRegisteredLayer'",
-      filename: "./mocked/lower-level-layer-imports/layerA.js",
+      filename: "./mocked/stratified-imports/layerA.js",
       options: [{ include: ["**/*.ts"] }],
     },
     {
       code: "import { func } from './notRegisteredLayer'",
-      filename: "./mocked/lower-level-layer-imports/layerA.js",
+      filename: "./mocked/stratified-imports/layerA.js",
       options: [{ exclude: ["**/*.js"] }],
     },
     {
       code: "import { func } from './notRegisteredLayer'",
-      filename: "./mocked/lower-level-layer-imports/layerA.js",
+      filename: "./mocked/stratified-imports/layerA.js",
       options: [{ include: ["**/*.js"], exclude: ["**/layerA.js"] }],
     },
     {
       code: "import { func } from './layerJ/entryJA'",
-      filename: "./mocked/lower-level-layer-imports/layerI.js",
+      filename: "./mocked/stratified-imports/layerI.js",
       options: [],
     },
   ],
   invalid: [
     {
       code: "import { func } from './layerA'",
-      filename: "./mocked/lower-level-layer-imports/notRegisteredLayer.js",
+      filename: "./mocked/stratified-imports/notRegisteredLayer.js",
       options: [],
       errors: [
         {
@@ -149,7 +149,7 @@ ruleTester.run("lower-level-layer-imports", rule, {
     },
     {
       code: "import { func } from './layerA'",
-      filename: "./mocked/lower-level-layer-imports/layerB.js",
+      filename: "./mocked/stratified-imports/layerB.js",
       options: [],
       errors: [
         {
@@ -160,7 +160,7 @@ ruleTester.run("lower-level-layer-imports", rule, {
     },
     {
       code: "import { func } from './layerD'",
-      filename: "./mocked/lower-level-layer-imports/layerB.js",
+      filename: "./mocked/stratified-imports/layerB.js",
       options: [],
       errors: [
         {
@@ -171,7 +171,7 @@ ruleTester.run("lower-level-layer-imports", rule, {
     },
     {
       code: "import { func } from './layerBA'",
-      filename: "./mocked/lower-level-layer-imports/layerB/layerBB.js",
+      filename: "./mocked/stratified-imports/layerB/layerBB.js",
       options: [],
       errors: [
         {
@@ -182,7 +182,7 @@ ruleTester.run("lower-level-layer-imports", rule, {
     },
     {
       code: "import { func } from '../layerA'",
-      filename: "./mocked/lower-level-layer-imports/layerB/layerBA.js",
+      filename: "./mocked/stratified-imports/layerB/layerBA.js",
       options: [],
       errors: [
         {
@@ -193,7 +193,7 @@ ruleTester.run("lower-level-layer-imports", rule, {
     },
     {
       code: "import { func } from './entryJA'",
-      filename: "./mocked/lower-level-layer-imports/layerJ/layerJC.js",
+      filename: "./mocked/stratified-imports/layerJ/layerJC.js",
       options: [],
       errors: [
         {
@@ -204,7 +204,7 @@ ruleTester.run("lower-level-layer-imports", rule, {
     },
     {
       code: "import { func } from '../layerI'",
-      filename: "./mocked/lower-level-layer-imports/layerJ/layerJC.js",
+      filename: "./mocked/stratified-imports/layerJ/layerJC.js",
       options: [],
       errors: [
         {
@@ -215,7 +215,7 @@ ruleTester.run("lower-level-layer-imports", rule, {
     },
     {
       code: "import { func } from './layerJ/notRegisteredEntry'",
-      filename: "./mocked/lower-level-layer-imports/layerI.js",
+      filename: "./mocked/stratified-imports/layerI.js",
       options: [],
       errors: [
         {
