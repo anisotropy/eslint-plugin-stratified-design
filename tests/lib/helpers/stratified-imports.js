@@ -15,10 +15,10 @@ const {
   toStructure,
   createAliases,
   replaceAlias,
-} = require("../../../lib/helpers/lowerLevelLayerImports/2 layer");
+} = require("../../../lib/helpers/stratifiedImports/2 layer");
 const {
   createModulePath,
-} = require("../../../lib/helpers/lowerLevelLayerImports/1 layer");
+} = require("../../../lib/helpers/stratifiedImports/1 layer");
 
 //------------------------------------------------------------------------------
 // Tests
