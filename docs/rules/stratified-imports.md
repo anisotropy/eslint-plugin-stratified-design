@@ -1,8 +1,8 @@
 # Require that lower-level modules be imported (stratified-imports)
 
-(This rule works correctly on POSIX systems, where the path segment separator is `/`. It will be updated to work well on Windows systems in the future.)
+(Note: This rule works correctly on POSIX systems, where the path segment separator is `/`. It will be updated to work well on Windows systems in the future.)
 
-This rule enforces the requirement for importing lower level modules. The hierarchy should be set by `.stratified.json` in **each folder** as follows:
+This rule enforces the requirement for importing lower-level modules. The hierarchy should be set by `.stratified.json` in **each folder** as follows:
 
 ```json
 [
@@ -13,7 +13,7 @@ This rule enforces the requirement for importing lower level modules. The hierar
 ]
 ```
 
-and consider that the folder structure is as follows:
+And consider that the folder structure is as follows:
 
 ```
  ┣ layerA
@@ -27,20 +27,20 @@ and consider that the folder structure is as follows:
  ┗ .stratified.json
 ```
 
-The above json file tells us:
+The above JSON file indicates the following:
 
-- `layerA` file/folder is the highest level layer.
-- `layerB` file/folder is a lower-level layer then `layerA` and a abstract barrier. (For the 'abstract barrier,' refer to '[Grokking Simplicity](https://grokkingsimplicity.com).')
-- `nodeModuleC` is a **installed module**(node module) and a lower level layer then `layerB`. (Not registered node modules are regard to be the lowest layers.)
-- `layerD` file/folder and `layerE` file/folder are same level layers and the lowest level layer.
+- The `layerA` file/folder at the highest level.
+- The `layerB` file/folder is a lower-level layer than `layerA` and serves as an abstract barrier. (For the concept of 'abstract barrier,' refer to '[Grokking Simplicity](https://grokkingsimplicity.com).')
+- `nodeModuleC` is an **installed module** (node module) and is at a lower level than `layerB`. (Unregistered node modules are considered to be the lowest layers.)
+- The `layerD` file/folder and the `layerE` file/folder are at the same level and represent the lowest level layers.
 
-Consider that the `.stratified.json` in `layerE` folder is as follows:
+Consider that the `.stratified.json` in the `layerE` folder is as follows:
 
 ```json
 [["index", "entry"], ["layerEA"]]
 ```
 
-Higher level layers than `layerE` can import `./layerE` and `./layer/entry` as follows:
+Higher-level layers than `layerE` can import `./layerE` and `./layer/entry` as follows:
 
 ```js
 import { func } from "./layerE";
@@ -49,9 +49,9 @@ import { func } from "./layerE/entry";
 
 However, `./layer/layerEA` should not be imported.
 
-### Options
+## Options
 
-If the name of an imported module has an alias, register the alias using the `aliases` option:
+If an imported module has an alias, register the alias using the `aliases` option:
 
 ```json
 {
@@ -64,7 +64,7 @@ If the name of an imported module has an alias, register the alias using the `al
 }
 ```
 
-You can register the files to apply the rule (`stratified-imports`) using the `include` and `exclude` options:
+You can register the files to which the rule (`stratified-imports`) should apply using the `include` and `exclude` options:
 
 ```json
 {
@@ -75,7 +75,7 @@ You can register the files to apply the rule (`stratified-imports`) using the `i
 }
 ```
 
-The default is as follows:
+The default configuration is as follows:
 
 ```json
 {
@@ -86,7 +86,7 @@ The default is as follows:
 
 ## Rule Details
 
-Consider a folder structure is as follows:
+Consider the following folder structure:
 
 ```
 src/
