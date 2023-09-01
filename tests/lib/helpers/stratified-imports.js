@@ -11,7 +11,7 @@
 const assert = require("assert");
 const {
   findLevel,
-  findLayerWithSimilarPath,
+  findLayerWithReducedPath,
   toStructure,
   createAliases,
   replaceAlias,
@@ -98,7 +98,7 @@ describe("helpers/stratified-imports", () => {
     });
   });
 
-  describe("findLayerWithSimilarPath()", () => {
+  describe("findLayerWithReducedPath()", () => {
     const structure = [[{ name: "/src/layerA" }], [{ name: "/src/layerB" }]];
     const testCases = [
       { path: "/src/layerA", layer: structure[0][0] },
@@ -107,7 +107,7 @@ describe("helpers/stratified-imports", () => {
     ];
     testCases.forEach(({ path, layer }) => {
       it(`The level of ${path} is ${JSON.stringify(layer)}`, () => {
-        assert.equal(findLayerWithSimilarPath(structure)(path), layer);
+        assert.equal(findLayerWithReducedPath(structure)(path), layer);
       });
     });
   });

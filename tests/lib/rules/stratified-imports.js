@@ -36,6 +36,18 @@ const RuleTester = require("eslint").RuleTester;
   ["layerBB"]
 ]
 
+// layerD/.stratified.json
+[
+  ["layerDA"],
+  ["layerDB"]
+]
+
+// layerD/layerDB/.stratified.json 
+[
+  ["layerDBA"],
+  ["layerDBB"]
+]
+
 // layerJ/.stratified.json
 [
   ["entryJA", "entryJB"],
@@ -66,7 +78,7 @@ ruleTester.run("stratified-imports", rule, {
     },
     {
       code: "import { func } from 'nodeModuleE'",
-      filename: "./mocked/stratified-imports/layerD.js",
+      filename: "./mocked/stratified-imports/layerD/layerDA.js",
       options: [],
     },
     {
@@ -134,6 +146,11 @@ ruleTester.run("stratified-imports", rule, {
       filename: "./mocked/stratified-imports/layerI.js",
       options: [],
     },
+    {
+      code: "import { func } from '@/layerF'",
+      filename: "./mocked/stratified-imports/layerD/layerDB/layerDBA.js",
+      options: [{ aliases: { "@/": "./mocked/stratified-imports/" } }],
+    },
   ],
   invalid: [
     {
@@ -155,6 +172,28 @@ ruleTester.run("stratified-imports", rule, {
         {
           messageId: "not-lower-level",
           data: { module: "layerA", file: "layerB" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from 'nodeModuleE'",
+      filename: "./mocked/stratified-imports/layerF.js",
+      options: [],
+      errors: [
+        {
+          messageId: "not-lower-level",
+          data: { module: "nodeModuleE", file: "layerF" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from 'nodeModuleE'",
+      filename: "./mocked/stratified-imports/layerJ/layerJC.js",
+      options: [],
+      errors: [
+        {
+          messageId: "not-lower-level",
+          data: { module: "nodeModuleE", file: "layerJC" },
         },
       ],
     },
@@ -188,6 +227,17 @@ ruleTester.run("stratified-imports", rule, {
         {
           messageId: "not-lower-level",
           data: { module: "layerA", file: "layerBA" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from '../../layerA'",
+      filename: "./mocked/stratified-imports/layerD/layerDB/layerDBA.js",
+      options: [],
+      errors: [
+        {
+          messageId: "not-lower-level",
+          data: { module: "layerA", file: "layerDBA" },
         },
       ],
     },
