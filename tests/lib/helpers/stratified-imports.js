@@ -19,7 +19,9 @@ const {
 } = require("../../../lib/helpers/stratifiedImports/2 layer");
 const {
   createModulePath,
+  parseFileSource,
 } = require("../../../lib/helpers/stratifiedImports/1 layer");
+const { resolvePath } = require("../../../lib/helpers/common");
 
 //------------------------------------------------------------------------------
 // Tests
@@ -40,7 +42,9 @@ describe("helpers/stratified-imports", () => {
       },
     ];
     testCases.forEach(({ rawStructure, structure }) => {
-      it(`${rawStructure} -> ${structure}`, () => {
+      it(`${JSON.stringify(rawStructure)} -> ${JSON.stringify(
+        structure
+      )}`, () => {
         assert.deepEqual(toStructure(rawStructure, fileDir), structure);
       });
     });
@@ -61,7 +65,7 @@ describe("helpers/stratified-imports", () => {
       },
     ];
     testCases.forEach(({ rawAliases, aliases }) => {
-      it(`${rawAliases} -> ${aliases}`, () => {
+      it(`${JSON.stringify(rawAliases)} -> ${JSON.stringify(aliases)}`, () => {
         assert.deepEqual(createAliases(rawAliases), aliases);
       });
     });
@@ -120,18 +124,50 @@ describe("helpers/stratified-imports", () => {
     const testCases = [
       {
         moduleSource: "@/layerA/layerAA",
-        modulePath: "/proj/src/layerA/layerAA",
+        excludeImports: [],
+        expected: {
+          modulePath: "/proj/src/layerA/layerAA",
+          isModuleExcluded: false,
+        },
+      },
+      {
+        moduleSource: "@/layerA/layerAA",
+        excludeImports: ["**/layerAA"],
+        expected: {
+          modulePath: "/proj/src/layerA/layerAA",
+          isModuleExcluded: true,
+        },
+      },
+      {
+        moduleSource: "@/layerA/style.css",
+        excludeImports: ["**/*.css"],
+        expected: {
+          modulePath: "/proj/src/layerA/style.css",
+          isModuleExcluded: true,
+        },
       },
       {
         moduleSource: "nodeModule",
-        modulePath: "nodeModule",
+        excludeImports: [],
+        expected: {
+          modulePath: "nodeModule",
+          isModuleExcluded: false,
+        },
+      },
+      {
+        moduleSource: "nodeModule",
+        excludeImports: ["nodeModule"],
+        expected: {
+          modulePath: "nodeModule",
+          isModuleExcluded: true,
+        },
       },
     ];
-    testCases.forEach(({ moduleSource, modulePath }) => {
-      it(`${moduleSource} -> ${modulePath}`, () => {
-        assert.equal(
-          createModulePath(cwd, fileDir, aliases)(moduleSource),
-          modulePath
+    testCases.forEach(({ moduleSource, excludeImports, expected }) => {
+      it(`${moduleSource} -> ${JSON.stringify(expected)}`, () => {
+        assert.deepEqual(
+          createModulePath(cwd, excludeImports, fileDir, aliases)(moduleSource),
+          expected
         );
       });
     });
@@ -205,6 +241,51 @@ describe("helpers/stratified-imports", () => {
     testCases.forEach(({ rawStructure, expected }) => {
       it(`${JSON.stringify(rawStructure)} -> ${expected}`, () => {
         assert.equal(validateRawStructure(rawStructure), expected);
+      });
+    });
+  });
+
+  describe("parseFileSource()", () => {
+    const makeOptions = (options) => ({ alias: {}, ...options });
+    const fileSource = "proj/src/layerA/layerAA.js";
+    const testCases = [
+      {
+        options: makeOptions({
+          include: ["**/*.js"],
+          exclude: ["**/*.test.js"],
+        }),
+        expected: {
+          fileDir: resolvePath("proj/src/layerA"),
+          filePath: resolvePath("proj/src/layerA/layerAA"),
+          isExcludedFile: false,
+        },
+      },
+      {
+        options: makeOptions({
+          include: ["**/*.js"],
+          exclude: ["**/layerAA.js"],
+        }),
+        expected: {
+          fileDir: resolvePath("proj/src/layerA"),
+          filePath: resolvePath("proj/src/layerA/layerAA"),
+          isExcludedFile: true,
+        },
+      },
+      {
+        options: makeOptions({
+          include: ["**/*.ts"],
+          exclude: ["**/*.test.js"],
+        }),
+        expected: {
+          fileDir: resolvePath("proj/src/layerA"),
+          filePath: resolvePath("proj/src/layerA/layerAA"),
+          isExcludedFile: true,
+        },
+      },
+    ];
+    testCases.forEach(({ options, expected }) => {
+      it(`${JSON.stringify(options)} => ${JSON.stringify(expected)}`, () => {
+        assert.deepEqual(parseFileSource(options, fileSource), expected);
       });
     });
   });
