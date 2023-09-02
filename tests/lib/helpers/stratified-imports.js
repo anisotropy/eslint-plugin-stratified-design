@@ -15,6 +15,7 @@ const {
   toStructure,
   createAliases,
   replaceAlias,
+  validateRawStructure,
 } = require("../../../lib/helpers/stratifiedImports/2 layer");
 const {
   createModulePath,
@@ -132,6 +133,78 @@ describe("helpers/stratified-imports", () => {
           createModulePath(cwd, fileDir, aliases)(moduleSource),
           modulePath
         );
+      });
+    });
+  });
+
+  describe("validateRawStructure()", () => {
+    const testCases = [
+      {
+        expected: true,
+        rawStructure: [["layerA", { name: "layerB" }], ["layerC"]],
+      },
+      {
+        expected: true,
+        rawStructure: [
+          ["layerA", { name: "layerB", nodeModule: true }],
+          ["layerC"],
+        ],
+      },
+      {
+        expected: true,
+        rawStructure: [
+          ["layerA", { name: "layerB", barrier: true }],
+          ["layerC"],
+        ],
+      },
+      {
+        expected: false,
+        rawStructure: [],
+      },
+      {
+        expected: false,
+        rawStructure: {},
+      },
+      {
+        expected: false,
+        rawStructure: "string",
+      },
+      {
+        expected: false,
+        rawStructure: [{ name: "layerA" }],
+      },
+      {
+        expected: false,
+        rawStructure: [["layerA/layerAA"]],
+      },
+      {
+        expected: false,
+        rawStructure: [[{ name: ["layerA"] }]],
+      },
+      {
+        expected: false,
+        rawStructure: [[{ nodeModule: true }]],
+      },
+      {
+        expected: false,
+        rawStructure: [[{ nodeModule: "true" }]],
+      },
+      {
+        expected: false,
+        rawStructure: [[{ barrier: true }]],
+      },
+      {
+        expected: false,
+        rawStructure: [[{ barrier: "true" }]],
+      },
+      {
+        expected: false,
+        rawStructure: [[{ name: "layerA", notAllowedKey: false }]],
+      },
+    ];
+    testCases.forEach(({ rawStructure, expected }) => {
+      it(`${JSON.stringify(rawStructure)} -> ${expected}`, () => {
+        assert.equal(validateRawStructure(rawStructure), expected);
       });
     });
   });
