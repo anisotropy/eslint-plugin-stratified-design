@@ -125,6 +125,17 @@ The default is as follows:
 }
 ```
 
+Imported modules can be excluded from the rule (`stratified-imports`) using the `excludeImports` option:
+
+```json
+{
+  "stratified-design/lower-level-imports": [
+    "error",
+    { "excludeImports": ["**/*.css"] }
+  ]
+}
+```
+
 ## Rule Details
 
 If a file structure is as follows:
