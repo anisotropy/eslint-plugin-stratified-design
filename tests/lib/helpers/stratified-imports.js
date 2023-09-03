@@ -16,6 +16,8 @@ const {
   createAliases,
   replaceAlias,
   validateRawStructure,
+  isInParent,
+  isInChildren,
 } = require("../../../lib/helpers/stratifiedImports/2 layer");
 const {
   createModulePath,
@@ -286,6 +288,56 @@ describe("helpers/stratified-imports", () => {
     testCases.forEach(({ options, expected }) => {
       it(`${JSON.stringify(options)} => ${JSON.stringify(expected)}`, () => {
         assert.deepEqual(parseFileSource(options, fileSource), expected);
+      });
+    });
+  });
+
+  describe("isInParent()", () => {
+    const testCases = [
+      {
+        fileDir: "src/layerA",
+        modulePath: "src/layerB/layerBA",
+        expected: true,
+      },
+      {
+        fileDir: "src/layerA",
+        modulePath: "src/layerA/layerAA",
+        expected: false,
+      },
+      {
+        fileDir: "src/layerA",
+        modulePath: "nodeModule",
+        expected: true,
+      },
+    ];
+    testCases.forEach(({ fileDir, modulePath, expected }) => {
+      it(`${fileDir}, ${modulePath} -> ${expected}`, () => {
+        assert.equal(isInParent(fileDir)(modulePath), expected);
+      });
+    });
+  });
+
+  describe("isInChildren()", () => {
+    const testCases = [
+      {
+        fileDir: "src/layerA",
+        modulePath: "src/layerA/layerAA",
+        expected: true,
+      },
+      {
+        fileDir: "src/layerA",
+        modulePath: "src/layerB/layerBA",
+        expected: false,
+      },
+      {
+        fileDir: "src/layerA",
+        modulePath: "nodeModule",
+        expected: false,
+      },
+    ];
+    testCases.forEach(({ fileDir, modulePath, expected }) => {
+      it(`${fileDir}, ${modulePath} -> ${expected}`, () => {
+        assert.equal(isInChildren(fileDir)(modulePath), expected);
       });
     });
   });

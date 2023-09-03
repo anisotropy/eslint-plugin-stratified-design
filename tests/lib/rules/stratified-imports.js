@@ -107,6 +107,11 @@ ruleTester.run("stratified-imports", rule, {
       options: [],
     },
     {
+      code: "import { func } from '../layerJ/entryJA'",
+      filename: "./mocked/stratified-imports/layerD/layerDA.js",
+      options: [],
+    },
+    {
       code: "import { func } from './layerJC'",
       filename: "./mocked/stratified-imports/layerJ/entryJB.js",
       options: [],
