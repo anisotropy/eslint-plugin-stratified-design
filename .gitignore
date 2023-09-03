@@ -11,3 +11,6 @@ node_modules/
 
 # IDE Settings
 .vscode
+
+# etc
+.DS_Store

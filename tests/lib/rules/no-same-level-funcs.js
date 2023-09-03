@@ -16,7 +16,13 @@ const rule = require("../../../lib/rules/no-same-level-funcs"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester({
-  parserOptions: { ecmaVersion: 2022, sourceType: "module" },
+  parserOptions: {
+    ecmaVersion: 2022,
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
 });
 
 ruleTester.run("no-same-level-funcs", rule, {
@@ -101,6 +107,11 @@ ruleTester.run("no-same-level-funcs", rule, {
       errors: [{ messageId: "no-same-level-funcs", data: { func: "fn" } }],
     },
     {
+      code: "const hof = (fn) => fn(); const fnByHof = hof(() => 1);",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "hof" } }],
+    },
+    {
       code: "const fnByHof = hof(() => 1); const value = fnByHof()",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "fnByHof" } }],
@@ -109,6 +120,16 @@ ruleTester.run("no-same-level-funcs", rule, {
       code: "const fnByHof = hof(() => 1); const fn = fnByHof(() => 1)",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "fnByHof" } }],
+    },
+    {
+      code: "const fn = () => 1; const fnByHof = hof(fn)",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "fn" } }],
+    },
+    {
+      code: "function CompA() { return <div /> }; function CompB() { return <CompA /> };",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "CompA" } }],
     },
     {
       code: "// @level 1\nfunction func1(){};\n// @level 2\nfunction func2(){ func1(); }",

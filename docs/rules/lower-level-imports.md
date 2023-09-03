@@ -15,9 +15,14 @@ This rule works correctly on POSIX systems, where the path segment separator is 
 The syntax to specify the level structure is as follows:
 
 ```json
-"lower-level-imports": ["error", {
-  "structure": ["layer1", "layer2", "layer3"]
-}]
+{
+  "stratified-design/lower-level-imports": [
+    "error",
+    {
+      "structure": ["layer1", "layer2", "layer3"]
+    }
+  ]
+}
 ```
 
 In the folder array, the file or folder on the left is considered to be at a higher level than the one on the right.
@@ -25,9 +30,14 @@ In the folder array, the file or folder on the left is considered to be at a hig
 To designate a layer as an abstract barrier, set `barrier` to `true`:
 
 ```json
-"lower-level-imports": ["error", {
-  "structure": ["layer1", { "name": "layer2", "barrier": true }, "layer3"],
-}]
+{
+  "stratified-design/lower-level-imports": [
+    "error",
+    {
+      "structure": ["layer1", { "name": "layer2", "barrier": true }, "layer3"]
+    }
+  ]
+}
 ```
 
 For the 'abstract barrier,' refer to "[Grokking Simplicity](https://grokkingsimplicity.com)."
@@ -35,33 +45,54 @@ For the 'abstract barrier,' refer to "[Grokking Simplicity](https://grokkingsimp
 To locate a node module in the structure, set `nodeModule` to `true`:
 
 ```json
-"lower-level-imports": ["error", {
-  "structure": ["layer1", { "name": "nodeModule", "nodeModule": true }, "layer3"],
-}]
+{
+  "stratified-design/lower-level-imports": [
+    "error",
+    {
+      "structure": [
+        "layer1",
+        { "name": "nodeModule", "nodeModule": true },
+        "layer3"
+      ]
+    }
+  ]
+}
 ```
 
 The default root directory is the current working directory. To change the root directory, use the `root` option:
 
 ```json
-"lower-level-imports": ["error", {
-  "structure": ["layer1", "layer2", "layer3"],
-  "root": "./src"
-}]
+{
+  "stratified-design/lower-level-imports": [
+    "error",
+    {
+      "structure": ["layer1", "layer2", "layer3"],
+      "root": "./src"
+    }
+  ]
+}
 ```
 
 If the name of an imported module has an alias, register the alias using the `aliases` option:
 
 ```json
-"lower-level-imports": ["error", {
-  "structure": ["layer1", "layer2", "layer3"],
-  "aliases": { "@": "./src" }
-}]
+{
+  "stratified-design/lower-level-imports": [
+    "error",
+    {
+      "structure": ["layer1", "layer2", "layer3"],
+      "aliases": { "@": "./src" }
+    }
+  ]
+}
 ```
 
 If you want to register the level of a layer by 'number,' set the option `useLevelNumber` to `true`:
 
 ```json
-"lower-level-imports": ["error", { "useLevelNumber": true }]
+{
+  "stratified-design/lower-level-imports": ["error", { "useLevelNumber": true }]
+}
 ```
 
 The options `structure` and `useLevelNumber` can be used together.
@@ -69,13 +100,20 @@ The options `structure` and `useLevelNumber` can be used together.
 An `index.xxx` file can be the highest level layer of sibling files when the option `isIndexHighest` is set to `true`:
 
 ```json
-"lower-level-imports": ["error", { "isIndexHighest": true }]
+{
+  "stratified-design/lower-level-imports": ["error", { "isIndexHighest": true }]
+}
 ```
 
 You can register the files to apply the rule (`lower-level-imports`) using the `include` and `exclude` options:
 
 ```json
-"lower-level-imports": ["error", { "include": ["**/*.js"], "exclude": ["**/*.test.js"] }]
+{
+  "stratified-design/lower-level-imports": [
+    "error",
+    { "include": ["**/*.js"], "exclude": ["**/*.test.js"] }
+  ]
+}
 ```
 
 The default is as follows:
