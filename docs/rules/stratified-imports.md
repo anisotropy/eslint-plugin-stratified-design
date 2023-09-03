@@ -68,7 +68,7 @@ You can register the files to which the rule (`stratified-imports`) should apply
 
 ```json
 {
-  "stratified-design/lower-level-imports": [
+  "stratified-design/stratified-imports": [
     "error",
     { "include": ["**/*.js"], "exclude": ["**/*.test.js"] }
   ]

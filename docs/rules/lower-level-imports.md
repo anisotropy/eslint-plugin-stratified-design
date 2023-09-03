@@ -125,7 +125,7 @@ The default is as follows:
 }
 ```
 
-Imported modules can be excluded from the rule (`stratified-imports`) using the `excludeImports` option:
+Imported modules can be excluded from the rule (`lower-level-imports`) using the `excludeImports` option:
 
 ```json
 {
