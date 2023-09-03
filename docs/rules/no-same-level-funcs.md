@@ -29,9 +29,7 @@ The default is as follows:
 Examples of **incorrect** code for this rule:
 
 ```js
-function func1(...) {
-  ...
-}
+function func1(...) { ... }
 
 const func2(...) => { ... }
 
@@ -39,16 +37,50 @@ function func3(...) {
   func1(...);
   func2(...);
 }
+
+const func4 = (...) => {
+  func1(...);
+  func2(...);
+}
+```
+
+```js
+const func1 = (...) => { ...}
+
+const func2(func1) => { ... }
+```
+
+```js
+const hof = (...) => { ... }
+
+const funcByHof = hof((...) => {...})
+```
+
+```js
+const ComponentA = (...) => { ... }
+
+const ComponentB = (...) => {
+  ...
+  return (
+    ...
+    <ComponentA>{...}</ComponentA>
+    ...
+  )
+}
 ```
 
 ```js
 // @level 1
 const funcA = (...) => { ... }
 
+// @level 1
+function funcB(...) { ... }
+
 // @level 2
-const funcB = (...) => {
+const funcC = (...) => {
   ...
   funcA(...)
+  funcB(...)
   ...
 }
 ```
@@ -56,9 +88,7 @@ const funcB = (...) => {
 Examples of **correct** code for this rule:
 
 ```js
-function func1(...) {
-  ...
-}
+function func1(...) { ... }
 
 const func2(...) => { ... }
 ```
@@ -75,10 +105,14 @@ function func1(...) {
 // @level 2
 const funcA = (...) => { ... }
 
+// @level 2
+function funcB(...) { ... }
+
 // @level 1
-const funcB = (...) => {
+const funcC = (...) => {
   ...
   funcA(...)
+  funcB(...)
   ...
 }
 ```
