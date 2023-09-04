@@ -68,7 +68,7 @@ You can register the files to which the rule (`stratified-imports`) should apply
 
 ```json
 {
-  "stratified-design/lower-level-imports": [
+  "stratified-design/stratified-imports": [
     "error",
     { "include": ["**/*.js"], "exclude": ["**/*.test.js"] }
   ]
@@ -81,6 +81,17 @@ The default configuration is as follows:
 {
   "include": ["**/*.{js,ts,jsx,tsx}"],
   "exclude": ["**/*.{spec,test}.{js,ts,jsx,tsx}"]
+}
+```
+
+Imported modules can be excluded from the rule (`stratified-imports`) using the `excludeImports` option:
+
+```json
+{
+  "stratified-design/stratified-imports": [
+    "error",
+    { "excludeImports": ["**/*.css"] }
+  ]
 }
 ```
 
