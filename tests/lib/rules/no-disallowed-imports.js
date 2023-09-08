@@ -178,14 +178,14 @@ ruleTester.run("no-disallowed-imports", rule, {
         {
           importPaths: [
             {
-              import: { specifiers: ["foo"], path: "**/src/fileA" },
-              allow: ["**/src/**/*.js"],
+              import: { specifiers: ["default"], path: "**/src/fileA" },
+              disallow: ["**/src/**/*.js"],
             },
           ],
         },
       ],
       errors: [
-        { messageId: "no-disallowed-imports", data: { specifier: "default" } },
+        { messageId: "no-disallowed-imports", data: { specifier: "foo" } },
       ],
     },
   ],
