@@ -1,5 +1,5 @@
 /**
- * @fileoverview ...
+ * @fileoverview ... // TODO: overview
  * @author Hodoug Joung
  */
 "use strict";
@@ -32,9 +32,9 @@ ruleTester.run("no-disallowed-imports", rule, {
       filename: "./src/fileB.js",
       options: [
         {
-          importPaths: [
+          imports: [
             {
-              import: { specifiers: ["foo"], path: "**/src/fileA" },
+              import: { member: ["foo"], from: "**/src/fileA" },
               allow: ["**/src/**/*.js"],
             },
           ],
@@ -46,13 +46,13 @@ ruleTester.run("no-disallowed-imports", rule, {
       filename: "./src/fileB.js",
       options: [
         {
-          importPaths: [
+          imports: [
             {
-              import: { specifiers: ["baz"], path: "**/src/fileC" },
+              import: { member: ["baz"], from: "**/src/fileC" },
               allow: ["**/src/**/*.js"],
             },
             {
-              import: { specifiers: ["foo", "bar"], path: "**/src/fileA" },
+              import: { member: ["foo", "bar"], from: "**/src/fileA" },
               allow: ["**/src/**/*.js"],
             },
           ],
@@ -64,9 +64,9 @@ ruleTester.run("no-disallowed-imports", rule, {
       filename: "./src/fileB.js",
       options: [
         {
-          importPaths: [
+          imports: [
             {
-              import: { specifiers: ["foo", "bar"], path: "**/src/fileA" },
+              import: { member: ["foo", "bar"], from: "**/src/fileA" },
               disallow: ["**/src/**/*.test.js"],
             },
           ],
@@ -78,9 +78,9 @@ ruleTester.run("no-disallowed-imports", rule, {
       filename: "./src/fileB.js",
       options: [
         {
-          importPaths: [
+          imports: [
             {
-              import: { specifiers: ["foo", "bar"], path: "**/src/fileA" },
+              import: { member: ["foo", "bar"], from: "**/src/fileA" },
               allow: ["**/src/**/*.js"],
               disallow: ["**/src/**/*.test.js"],
             },
@@ -93,9 +93,9 @@ ruleTester.run("no-disallowed-imports", rule, {
       filename: "./src/fileB.js",
       options: [
         {
-          importPaths: [
+          imports: [
             {
-              import: { specifiers: ["foo"], path: "**/src/fileA" },
+              import: { member: ["foo"], from: "**/src/fileA" },
               allow: ["**/src/**/*.js"],
             },
           ],
@@ -108,9 +108,9 @@ ruleTester.run("no-disallowed-imports", rule, {
       filename: "./src/fileB.js",
       options: [
         {
-          importPaths: [
+          imports: [
             {
-              import: { specifiers: ["default"], path: "**/src/fileA" },
+              import: { member: ["default"], from: "**/src/fileA" },
               allow: ["**/src/**/*.js"],
             },
           ],
@@ -124,69 +124,61 @@ ruleTester.run("no-disallowed-imports", rule, {
       filename: "./src/fileB.js",
       options: [
         {
-          importPaths: [
+          imports: [
             {
-              import: { specifiers: ["foo"], path: "**/src/fileA" },
+              import: { member: ["foo"], from: "**/src/fileA" },
               allow: ["**/src/**/*.test.js"],
             },
           ],
         },
       ],
-      errors: [
-        { messageId: "no-disallowed-imports", data: { specifier: "foo" } },
-      ],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "foo" } }],
     },
     {
       code: "import { foo } from './fileA'",
       filename: "./src/fileB.js",
       options: [
         {
-          importPaths: [
+          imports: [
             {
-              import: { specifiers: ["foo"], path: "**/src/fileA" },
+              import: { member: ["foo"], from: "**/src/fileA" },
               disallow: ["**/src/**/*.js"],
             },
           ],
         },
       ],
-      errors: [
-        { messageId: "no-disallowed-imports", data: { specifier: "foo" } },
-      ],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "foo" } }],
     },
     {
       code: "import { foo } from './fileA'",
       filename: "./src/fileB.js",
       options: [
         {
-          importPaths: [
+          imports: [
             {
-              import: { specifiers: ["foo"], path: "**/src/fileA" },
+              import: { member: ["foo"], from: "**/src/fileA" },
               allow: ["**/src/**/*.js"],
               disallow: ["**/src/**/fileB.*"],
             },
           ],
         },
       ],
-      errors: [
-        { messageId: "no-disallowed-imports", data: { specifier: "foo" } },
-      ],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "foo" } }],
     },
     {
       code: "import foo from './fileA'",
       filename: "./src/fileB.js",
       options: [
         {
-          importPaths: [
+          imports: [
             {
-              import: { specifiers: ["default"], path: "**/src/fileA" },
+              import: { member: ["default"], from: "**/src/fileA" },
               disallow: ["**/src/**/*.js"],
             },
           ],
         },
       ],
-      errors: [
-        { messageId: "no-disallowed-imports", data: { specifier: "foo" } },
-      ],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "foo" } }],
     },
   ],
 });
