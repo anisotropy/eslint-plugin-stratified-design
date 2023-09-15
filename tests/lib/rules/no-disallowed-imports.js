@@ -1,5 +1,5 @@
 /**
- * @fileoverview ... // TODO: overview
+ * @fileoverview Allow or disallow importing specified modules
  * @author Hodoug Joung
  */
 "use strict";
@@ -30,14 +30,14 @@ ruleTester.run("no-disallowed-imports", rule, {
     {
       code: "import { foo } from './fileA'",
       filename: "./src/fileB.js",
+      options: [],
+    },
+    {
+      code: "import { foo } from './fileA'",
+      filename: "./src/fileB.js",
       options: [
         {
-          imports: [
-            {
-              import: { member: ["foo"], from: "**/src/fileA" },
-              allow: ["**/src/**/*.js"],
-            },
-          ],
+          imports: [{ import: { member: ["foo"], from: "**/src/fileA" } }],
         },
       ],
     },
