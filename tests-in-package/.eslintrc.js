@@ -17,5 +17,9 @@ module.exports = {
         useLevelNumber: true,
       },
     ],
+    "stratified-design/no-same-level-funcs": [
+      "error",
+      { exclude: ["src/layer1/module.js"] },
+    ],
   },
 };

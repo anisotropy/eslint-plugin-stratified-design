@@ -1,5 +1,5 @@
 /**
- * @fileoverview test for helpers/stratified-imports
+ * @fileoverview test for helpers/lower-level-imports
  * @author Hodoug Joung
  */
 "use strict";
@@ -17,7 +17,7 @@ const {
 // Tests
 //------------------------------------------------------------------------------
 
-describe("helpers/stratified-imports", () => {
+describe("helpers/lower-level-imports", () => {
   describe("createModulePath()", () => {
     const cwd = "/proj";
     const fileDir = "/proj/src/layerA";

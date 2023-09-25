@@ -48,7 +48,7 @@ ruleTester.run("no-same-level-funcs", rule, {
     {
       code: "function func1(){}; function func2(){ func1(); }",
       filename: "./src/foo.js",
-      options: [{ include: ["**/src/**/*.*"], exclude: ["**/foo.js"] }],
+      options: [{ include: ["src/**/*.*"], exclude: ["src/foo.js"] }],
     },
     {
       code: "// @level 2\nfunction func2(){};\n// @level 1\nfunction func1(){ func2(); }",
@@ -125,6 +125,16 @@ ruleTester.run("no-same-level-funcs", rule, {
       code: "const fn = () => 1; const fnByHof = hof(fn)",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "fn" } }],
+    },
+    {
+      code: "const fn1 = template``; const fn2 = () => fn1();",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "fn1" } }],
+    },
+    {
+      code: "const Comp1 = styled.div``; const Comp2 = () => <Comp1 />",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "Comp1" } }],
     },
     {
       code: "function CompA() { return <div /> }; function CompB() { return <CompA /> };",

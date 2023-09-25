@@ -208,6 +208,7 @@ describe("helpers/stratified-imports", () => {
 
   describe("parseFileSource()", () => {
     const makeOptions = (options) => ({ alias: {}, ...options });
+    const cwd = "proj";
     const fileSource = "proj/src/layerA/layerAA.js";
     const testCases = [
       {
@@ -246,7 +247,7 @@ describe("helpers/stratified-imports", () => {
     ];
     testCases.forEach(({ options, expected }) => {
       it(`${JSON.stringify(options)} => ${JSON.stringify(expected)}`, () => {
-        assert.deepEqual(parseFileSource(options, fileSource), expected);
+        assert.deepEqual(parseFileSource(options, cwd, fileSource), expected);
       });
     });
   });
