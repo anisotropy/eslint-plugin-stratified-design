@@ -16,17 +16,17 @@ To control module imports, use the `imports` option:
     {
       "imports": [
         {
-          "import": { "member": ["foo"], "from": "**/src/fileA" },
-          "allow": ["**/src/some-dir/*.js"]
+          "import": { "member": ["foo"], "from": "src/fileA" },
+          "allow": ["src/some-dir/*.js"]
         },
         {
-          "import": { "member": ["foo", "bar"], "from": "**/src/fileB" },
-          "disallow": ["**/src/not-allowed-file.js"]
+          "import": { "member": ["foo", "bar"], "from": "src/fileB" },
+          "disallow": ["src/not-allowed-file.js"]
         },
         {
-          "import": { "member": ["baz"], "from": "**/src/fileC" },
-          "allow": ["**/src/some-dir/*.js"],
-          "disallow": ["**/src/not-allowed-file.js"]
+          "import": { "member": ["baz"], "from": "src/fileC" },
+          "allow": ["src/some-dir/*.js"],
+          "disallow": ["src/not-allowed-file.js"]
         }
       ]
     }
@@ -57,9 +57,9 @@ Examples of **incorrect** code for this rule:
 //   {
 //     "imports": [
 //       {
-//         "import": { "member": ["foo"], "from": "**/src/fileA" },
-//         "allow": ["**/src/**/fileB.js"],
-//         "disallow": ["**/src/**/fileC.*"]
+//         "import": { "member": ["foo"], "from": "src/fileA" },
+//         "allow": ["src/**/fileB.js"],
+//         "disallow": ["src/**/fileC.*"]
 //       }
 //     ]
 //   }
@@ -77,9 +77,9 @@ Examples of **correct** code for this rule:
 //   {
 //     "imports": [
 //       {
-//         "import": { "member": ["foo"], "from": "**/src/fileA" },
-//         "allow": ["**/src/**/fileB.js"],
-//         "disallow": ["**/src/**/fileC.*"]
+//         "import": { "member": ["foo"], "from": "src/fileA" },
+//         "allow": ["src/**/fileB.js"],
+//         "disallow": ["src/**/fileC.*"]
 //       }
 //     ]
 //   }

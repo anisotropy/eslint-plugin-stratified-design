@@ -118,7 +118,7 @@ ruleTester.run("lower-level-imports", rule, {
           structure,
           root: "./src",
           include: ["**/*.js"],
-          exclude: ["**/otherLayerA.test.js"],
+          exclude: ["src/otherLayerA.test.js"],
         },
       ],
     },
