@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-stratified-design",
-  "version": "0.9.1-beta",
+  "version": "0.9.1",
   "description": "ESlint rules for stratified design",
   "keywords": [
     "eslint",
