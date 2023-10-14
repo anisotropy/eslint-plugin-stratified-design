@@ -32,7 +32,7 @@ const RuleTester = require("eslint").RuleTester;
 
 // layerB/.stratified.json
 [
-  ["layerBA"],
+  ["index", "layerBA"],
   ["layerBB"]
 ]
 
@@ -276,6 +276,28 @@ ruleTester.run("stratified-imports", rule, {
         {
           messageId: "not-lower-level",
           data: { module: "notRegisteredEntry", file: "layerI" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from './layerB/layerBB'",
+      filename: "./mocked/stratified-imports/layerA.js",
+      options: [],
+      errors: [
+        {
+          messageId: "not-lower-level",
+          data: { module: "layerBB", file: "layerA" },
+        },
+      ],
+    },
+    {
+      code: "import { func } from './layerD/layerDB/layerDBA'",
+      filename: "./mocked/stratified-imports/layerC.js",
+      options: [],
+      errors: [
+        {
+          messageId: "not-lower-level",
+          data: { module: "layerDBA", file: "layerC" },
         },
       ],
     },
