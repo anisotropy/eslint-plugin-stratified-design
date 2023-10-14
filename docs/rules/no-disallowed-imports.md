@@ -57,7 +57,7 @@ Examples of **incorrect** code for this rule:
 //   {
 //     "imports": [
 //       {
-//         "import": { "member": ["foo"], "from": "src/fileA" },
+//         "import": { "member": ["foo", "default", "*"], "from": "src/fileA" },
 //         "allow": ["src/**/fileB.js"],
 //         "disallow": ["src/**/fileC.*"]
 //       }
@@ -69,6 +69,42 @@ Examples of **incorrect** code for this rule:
 import { foo } from "./fileA";
 ```
 
+```js
+// "stratified-design/no-disallowed-imports": [
+//   "error",
+//   {
+//     "imports": [
+//       {
+//         "import": { "member": ["foo", "default", "*"], "from": "src/fileA" },
+//         "allow": ["src/**/fileB.js"],
+//         "disallow": ["src/**/fileC.*"]
+//       }
+//     ]
+//   }
+// ]
+
+// ./src/fileC.js
+import foo from "./fileA";
+```
+
+```js
+// "stratified-design/no-disallowed-imports": [
+//   "error",
+//   {
+//     "imports": [
+//       {
+//         "import": { "member": ["foo", "default", "*"], "from": "src/fileA" },
+//         "allow": ["src/**/fileB.js"],
+//         "disallow": ["src/**/fileC.*"]
+//       }
+//     ]
+//   }
+// ]
+
+// ./src/fileC.js
+import * as foo from "./fileA";
+```
+
 Examples of **correct** code for this rule:
 
 ```js
@@ -77,7 +113,7 @@ Examples of **correct** code for this rule:
 //   {
 //     "imports": [
 //       {
-//         "import": { "member": ["foo"], "from": "src/fileA" },
+//         "import": { "member": ["foo", "default", "*"], "from": "src/fileA" },
 //         "allow": ["src/**/fileB.js"],
 //         "disallow": ["src/**/fileC.*"]
 //       }
