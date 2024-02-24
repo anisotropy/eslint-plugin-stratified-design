@@ -12,7 +12,7 @@
   "author": "Hodoug Joung",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anisotropy/eslint-plugin-stratified-design.git"
+    "url": "https://github.com/anisotropy/eslint-plugin-stratified-design"
   },
   "homepage": "https://github.com/anisotropy/eslint-plugin-stratified-design",
   "main": "./lib/index.js",
