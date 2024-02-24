@@ -10,6 +10,7 @@ This rule enforces the requirement for importing lower-level modules. The hierar
   [{ "name": "layerB", "barrier": true }],
   [{ "name": "nodeModuleC", "nodeModule": true }],
   ["layerD", "layerE"]
+  [{ "name": "layerF", "language": true }]
 ]
 ```
 
@@ -24,6 +25,7 @@ And consider that the folder structure is as follows:
  ┃ ┣ entry
  ┃ ┣ layerEA
  ┃ ┗ .stratified.json
+ ┣ layerF
  ┗ .stratified.json
 ```
 
@@ -33,6 +35,7 @@ The above JSON file indicates the following:
 - The `layerB` file/folder is a lower-level layer than `layerA` and serves as an abstract barrier. (For the concept of 'abstract barrier,' refer to '[Grokking Simplicity](https://grokkingsimplicity.com).')
 - `nodeModuleC` is an **installed module** (node module) and is at a lower level than `layerB`. (Unregistered node modules are considered to be the lowest layers.)
 - The `layerD` file/folder and the `layerE` file/folder are at the same level and represent the lowest level layers.
+- The `layerF` file/folder is a language layer and 'pass' any abstract barrier.
 
 Consider that the `.stratified.json` in the `layerE` folder is as follows:
 
@@ -109,6 +112,7 @@ src/
  ┃ ┣ entry
  ┃ ┣ layerEA.js
  ┃ ┗ .stratified.json
+ ┣ layerF
  ┗ .stratified.json
 ```
 
@@ -119,7 +123,8 @@ and the `.stratified.json` in `src/` is as follows:
   ["layerA"],
   [{ "name": "layerB", "barrier": true }],
   [{ "name": "nodeModuleC", "nodeModule": true }],
-  ["layerD", "layerE"]
+  ["layerD", "layerE"],
+  [{ "name": "layerF", "language": true }]
 ]
 ```
 
@@ -186,4 +191,9 @@ import { func } from "./layerE";
 ```js
 // ./layerB.js
 import { func } from "./layerE/entry";
+```
+
+```js
+// ./layerA.js
+import { func } from "./layerF";
 ```

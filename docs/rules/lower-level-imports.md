@@ -40,6 +40,23 @@ To designate a layer as an abstract barrier, set `barrier` to `true`:
 }
 ```
 
+A language layer can 'pass' any abstract barrier:
+
+```json
+{
+  "stratified-design/lower-level-imports": [
+    "error",
+    {
+      "structure": [
+        "layer1",
+        { "name": "layer2", "barrier": true },
+        { "name": "layer3", "language": true }
+      ]
+    }
+  ]
+}
+```
+
 For the 'abstract barrier,' refer to "[Grokking Simplicity](https://grokkingsimplicity.com)."
 
 To locate a node module in the structure, set `nodeModule` to `true`:
@@ -148,10 +165,11 @@ src/
  ┃ ┣ file.js
  ┃ ┣ otherFile.js
  ┃ ┗ subFolder/
- ┗ layer3/
-   ┣ entry.js
-   ┣ 1 layer.js
-   ┗ 2 layer.js
+ ┃ layer3/
+ ┃ ┣ entry.js
+ ┃ ┣ 1 layer.js
+ ┃ ┗ 2 layer.js
+ ┗ layer4.js
 ```
 
 Examples of **incorrect** code for this rule:
@@ -241,4 +259,12 @@ import { func } from "../layer3/entry";
 /* "lower-level-imports": ["error", { "isIndexHighest": true }] */
 // ./src/layer2/index.js
 import { func } from "./file";
+```
+
+```js
+/* "lower-level-imports": ["error", {
+  "structure": ["layer1", { name: "layer2", barrier: true }, "layer3", { name: "layer4", language: true }]
+}] */
+// ./src/layer1.js
+import { func } from "./layer4";
 ```

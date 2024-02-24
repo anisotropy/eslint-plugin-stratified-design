@@ -27,7 +27,8 @@ const RuleTester = require("eslint").RuleTester;
   ["layerG", "layerH"],
   ["layerI"],
   ["layerJ"],
-  ["layerK"]
+  ["layerK"],
+  [{ "name": "layerL", "language": true }]
 ]
 
 // layerB/.stratified.json
@@ -154,6 +155,11 @@ ruleTester.run("stratified-imports", rule, {
     {
       code: "import { func } from '@/layerF'",
       filename: "./mocked/stratified-imports/layerD/layerDB/layerDBA.js",
+      options: [{ aliases: { "@/": "./mocked/stratified-imports/" } }],
+    },
+    {
+      code: "import { func } from '@/layerL'",
+      filename: "./mocked/stratified-imports/layerA.js",
       options: [{ aliases: { "@/": "./mocked/stratified-imports/" } }],
     },
   ],
