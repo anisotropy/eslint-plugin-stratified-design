@@ -24,6 +24,7 @@ const structure = [
   "layer3/subLayer1",
   "layer3/subLayer2",
   "layer3/subLayer3",
+  { name: "layer4", language: true },
 ];
 
 const ruleTester = new RuleTester({
@@ -225,6 +226,11 @@ ruleTester.run("lower-level-imports", rule, {
           isIndexHighest: true,
         },
       ],
+    },
+    {
+      code: "import { func } from '@/layer4'",
+      filename: "./src/layer1/subLayer2.js",
+      options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
     },
   ],
   invalid: [
