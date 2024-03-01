@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-stratified-design",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "ESlint rules for stratified design",
   "keywords": [
     "eslint",
@@ -27,6 +27,7 @@
     "requireindex": "^1.2.0"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^7.1.0",
     "eslint": "^8.19.0",
     "eslint-plugin-eslint-plugin": "^5.0.0",
     "eslint-plugin-node": "^11.1.0",
