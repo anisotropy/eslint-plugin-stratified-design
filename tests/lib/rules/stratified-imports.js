@@ -10,6 +10,7 @@
 
 const rule = require("../../../lib/rules/stratified-imports");
 const RuleTester = require("eslint").RuleTester;
+const path = require("path");
 
 //------------------------------------------------------------------------------
 // Tests
@@ -57,7 +58,10 @@ const RuleTester = require("eslint").RuleTester;
 */
 
 const ruleTester = new RuleTester({
-  parserOptions: { ecmaVersion: 2022, sourceType: "module" },
+  parser: path.resolve(
+    "./node_modules/@typescript-eslint/parser/dist/parser.js"
+  ),
+  parserOptions: { ecmaVersion: "latest", sourceType: "module" },
 });
 
 ruleTester.run("stratified-imports", rule, {
@@ -161,6 +165,11 @@ ruleTester.run("stratified-imports", rule, {
       code: "import { func } from '@/layerL'",
       filename: "./mocked/stratified-imports/layerA.js",
       options: [{ aliases: { "@/": "./mocked/stratified-imports/" } }],
+    },
+    {
+      code: "import type { SomeType } from './layerA'",
+      filename: "./mocked/stratified-imports/layerB.js",
+      options: [],
     },
   ],
   invalid: [

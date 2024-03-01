@@ -9,7 +9,8 @@
 //------------------------------------------------------------------------------
 
 const rule = require("../../../lib/rules/lower-level-imports"),
-  RuleTester = require("eslint").RuleTester;
+  RuleTester = require("eslint").RuleTester,
+  path = require("path");
 
 //------------------------------------------------------------------------------
 // Tests
@@ -28,7 +29,10 @@ const structure = [
 ];
 
 const ruleTester = new RuleTester({
-  parserOptions: { ecmaVersion: 2022, sourceType: "module" },
+  parser: path.resolve(
+    "./node_modules/@typescript-eslint/parser/dist/parser.js"
+  ),
+  parserOptions: { ecmaVersion: "latest", sourceType: "module" },
 });
 
 ruleTester.run("lower-level-imports", rule, {
@@ -229,6 +233,11 @@ ruleTester.run("lower-level-imports", rule, {
     },
     {
       code: "import { func } from '@/layer4'",
+      filename: "./src/layer1/subLayer2.js",
+      options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
+    },
+    {
+      code: "import type { SomeType } from '@/layer2/subLayer2'",
       filename: "./src/layer1/subLayer2.js",
       options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
     },
