@@ -131,6 +131,34 @@ ruleTester.run("no-disallowed-imports", rule, {
         },
       ],
     },
+    {
+      code: "import { anyMember } from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "src/fileA" },
+              allow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "import * as namespace from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "src/fileA" },
+              allow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -146,7 +174,7 @@ ruleTester.run("no-disallowed-imports", rule, {
           ],
         },
       ],
-      errors: [{ messageId: "no-disallowed-imports", data: { member: "foo" } }],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "'foo'", from: "src/fileA" } }],
     },
     {
       code: "import { foo } from './fileA'",
@@ -161,7 +189,7 @@ ruleTester.run("no-disallowed-imports", rule, {
           ],
         },
       ],
-      errors: [{ messageId: "no-disallowed-imports", data: { member: "foo" } }],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "'foo'", from: "src/fileA" } }],
     },
     {
       code: "import { foo } from './fileA'",
@@ -177,7 +205,7 @@ ruleTester.run("no-disallowed-imports", rule, {
           ],
         },
       ],
-      errors: [{ messageId: "no-disallowed-imports", data: { member: "foo" } }],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "'foo'", from: "src/fileA" } }],
     },
     {
       code: "import foo from './fileA'",
@@ -192,7 +220,7 @@ ruleTester.run("no-disallowed-imports", rule, {
           ],
         },
       ],
-      errors: [{ messageId: "no-disallowed-imports", data: { member: "foo" } }],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "'foo'", from: "src/fileA" } }],
     },
     {
       code: "import * as name from './fileA'",
@@ -208,7 +236,24 @@ ruleTester.run("no-disallowed-imports", rule, {
         },
       ],
       errors: [
-        { messageId: "no-disallowed-imports", data: { member: "name" } },
+        { messageId: "no-disallowed-imports", data: { member: "'name'", from: "src/fileA" } },
+      ],
+    },
+    {
+      code: "import { anyMember } from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "src/fileA" },
+              disallow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+      errors: [
+        { messageId: "no-disallowed-imports", data: { member: "Any member", from: "src/fileA" } },
       ],
     },
   ],
