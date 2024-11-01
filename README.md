@@ -36,7 +36,6 @@ Then configure the rules you wish to use under the rules section:
 }
 ```
 
-
 ## Supported Rules
 
 - [lower-level-imports](https://github.com/anisotropy/eslint-plugin-stratified-design/blob/main/docs/rules/lower-level-imports.md): Requires lower-level modules to be imported.
