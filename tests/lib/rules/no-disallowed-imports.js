@@ -132,6 +132,20 @@ ruleTester.run("no-disallowed-imports", rule, {
       ],
     },
     {
+      code: "import { foo } from 'nodeModule'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["*"], from: "src/fileA" },
+              disallow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: "import { anyMember } from './fileA'",
       filename: "./src/fileB.js",
       options: [
@@ -154,6 +168,48 @@ ruleTester.run("no-disallowed-imports", rule, {
             {
               import: { member: "*", from: "src/fileA" },
               allow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "import { anyMember } from './fileA.act'",
+      filename: "./src/fileB.cal.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "**/*.act" },
+              allow: ["src/**/*.cal.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "import { anyMember } from 'fileA.cal'",
+      filename: "./src/fileB.act.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "**/*.act" },
+              disallow: ["src/**/*.cal.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "import { anyMember } from 'nodeModule'",
+      filename: "./src/fileB.cal.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "**/*.act" },
+              disallow: ["src/**/*.cal.js"],
             },
           ],
         },
@@ -240,20 +296,20 @@ ruleTester.run("no-disallowed-imports", rule, {
       ],
     },
     {
-      code: "import { anyMember } from './fileA'",
-      filename: "./src/fileB.js",
+      code: "import { anyMember } from './fileA.act'",
+      filename: "./src/fileB.cal.js",
       options: [
         {
           imports: [
             {
-              import: { member: "*", from: "src/fileA" },
-              disallow: ["src/**/*.js"],
+              import: { member: "*", from: "**/*.act" },
+              disallow: ["**/*.cal.js"],
             },
           ],
         },
       ],
       errors: [
-        { messageId: "no-disallowed-imports", data: { member: "Any member", from: "src/fileA" } },
+        { messageId: "no-disallowed-imports", data: { member: "Any member", from: "**/*.act" } },
       ],
     },
   ],
