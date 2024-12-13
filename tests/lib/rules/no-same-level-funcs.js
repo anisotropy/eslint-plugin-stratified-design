@@ -50,28 +50,58 @@ ruleTester.run("no-same-level-funcs", rule, {
       filename: "./src/foo.js",
       options: [{ include: ["src/**/*.*"], exclude: ["src/foo.js"] }],
     },
+
     {
       code: "// @level 2\nfunction func2(){};\n// @level 1\nfunction func1(){ func2(); }",
       filename: "./src/foo.js",
     },
     {
+      code: "// @level 2\nexport function func2(){};\n// @level 1\nfunction func1(){ func2(); }",
+      filename: "./src/foo.js",
+    },
+
+    {
       code: "// @level 2\nconst func2 = () => {};\n// @level 1\nfunction func1(){ func2(); }",
       filename: "./src/foo.js",
     },
+    {
+      code: "// @level 2\nexport const func2 = () => {};\n// @level 1\nfunction func1(){ func2(); }",
+      filename: "./src/foo.js",
+    },
+
     {
       code: "// @level 2\nconst func2 = () => {};\n// @level 1\nconst func1 = () => func2();",
       filename: "./src/foo.js",
     },
     {
+      code: "// @level 2\nexport const func2 = () => {};\n// @level 1\nconst func1 = () => func2();",
+      filename: "./src/foo.js",
+    },
+
+    {
       code: "/*@level 2*/\nconst func2 = () => {};\n/*@level 1*/\nconst func1 = () => func2();",
       filename: "./src/foo.js",
     },
+    {
+      code: "/*@level 2*/\nexport const func2 = () => {};\n/*@level 1*/\nconst func1 = () => func2();",
+      filename: "./src/foo.js",
+    },
+
     {
       code: "// @level 2 something\nconst func2 = () => {};\n// @level 1 something\nconst func1 = () => func2();",
       filename: "./src/foo.js",
     },
     {
+      code: "// @level 2 something\nexport const func2 = () => {};\n// @level 1 something\nconst func1 = () => func2();",
+      filename: "./src/foo.js",
+    },
+
+    {
       code: "/*\n@level 2\nsomething\n*/\nconst func2 = () => {};\n/*something\n@level 1\n*/\nconst func1 = () => func2();",
+      filename: "./src/foo.js",
+    },
+    {
+      code: "/*\n@level 2\nsomething\n*/\nexport const func2 = () => {};\n/*something\n@level 1\n*/\nconst func1 = () => func2();",
       filename: "./src/foo.js",
     },
   ],
@@ -192,11 +222,18 @@ ruleTester.run("no-same-level-funcs", rule, {
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
+
     {
       code: "// @level 2\nfunction func2(){};\nfunction func1(){ func2(); }",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func2" } }],
     },
+    {
+      code: "// @level 2\nexport function func2(){};\nfunction func1(){ func2(); }",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func2" } }],
+    },
+
     {
       code: "function func2(){};\n// @level 1\nfunction func1(){ func2(); }",
       filename: "./src/foo.js",
