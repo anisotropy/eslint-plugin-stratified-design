@@ -82,27 +82,73 @@ ruleTester.run("no-same-level-funcs", rule, {
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
     {
+      code: "export function func1(){}; function func2(){ func1(); }",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
+    {
+      code: "export default function func1(){}; function func2(){ func1(); }",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
+
+    {
       code: "function func2(){ func1(); }; function func1(){}",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
+
+    {
+      code: "export function func2(){ func1(); }; function func1(){}",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
+    {
+      code: "export default function func2(){ func1(); }; function func1(){}",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
+
     {
       code: "const func1 = () => {}; const func2 = () => { func1(); }",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
     {
+      code: "export const func1 = () => {}; const func2 = () => { func1(); }",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
+
+    {
       code: "const func1 = function(){}; const func2 = function(){ func1(); }",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
+    {
+      code: "export const func1 = function(){}; const func2 = function(){ func1(); }",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
+
     {
       code: "const func1 = function func1(){}; const func2 = function func2(){ func1(); }",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
     },
     {
+      code: "export const func1 = function func1(){}; const func2 = function func2(){ func1(); }",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func1" } }],
+    },
+
+    {
       code: "const fn = () => 1; const value = fn()",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "fn" } }],
+    },
+    {
+      code: "export const fn = () => 1; const value = fn()",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "fn" } }],
     },
