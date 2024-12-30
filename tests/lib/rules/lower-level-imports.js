@@ -220,7 +220,7 @@ ruleTester.run("lower-level-imports", rule, {
       ],
     },
     {
-      code: "import { func } from '@/other/file.js'",
+      code: "import { func } from '@/other/file'",
       filename: "./src/other/index.js",
       options: [
         {
@@ -239,7 +239,14 @@ ruleTester.run("lower-level-imports", rule, {
     {
       code: "import type { SomeType } from '@/layer2/subLayer2'",
       filename: "./src/layer1/subLayer2.js",
-      options: [{ structure, root: "./src", aliases: { "@/": "./src/" } }],
+      options: [
+        {
+          structure,
+          root: "./src",
+          aliases: { "@/": "./src/" },
+          ignoreType: true,
+        },
+      ],
     },
   ],
   invalid: [
@@ -415,7 +422,7 @@ ruleTester.run("lower-level-imports", rule, {
       ],
     },
     {
-      code: "import { func } from '@/other/file.js'",
+      code: "import { func } from '@/other/file'",
       filename: "./src/other/index.js",
       options: [
         {
@@ -427,7 +434,24 @@ ruleTester.run("lower-level-imports", rule, {
       errors: [
         {
           messageId: "not-registered:file",
-          data: { module: "./other/file.js", file: "./other/index" },
+          data: { module: "./other/file", file: "./other/index" },
+        },
+      ],
+    },
+    {
+      code: "import type { SomeType } from '@/layer2/subLayer2'",
+      filename: "./src/layer1/subLayer2.js",
+      options: [
+        {
+          structure,
+          root: "./src",
+          aliases: { "@/": "./src/" },
+        },
+      ],
+      errors: [
+        {
+          messageId: "barrier",
+          data: { module: "./layer2/subLayer2", file: "./layer1/subLayer2" },
         },
       ],
     },

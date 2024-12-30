@@ -169,7 +169,7 @@ ruleTester.run("stratified-imports", rule, {
     {
       code: "import type { SomeType } from './layerA'",
       filename: "./mocked/stratified-imports/layerB.js",
-      options: [],
+      options: [{ ignoreType: true }],
     },
   ],
   invalid: [
@@ -313,6 +313,16 @@ ruleTester.run("stratified-imports", rule, {
         {
           messageId: "not-lower-level",
           data: { module: "layerDBA", file: "layerC" },
+        },
+      ],
+    },
+    {
+      code: "import type { SomeType } from './layerA'",
+      filename: "./mocked/stratified-imports/layerB.js",
+      errors: [
+        {
+          messageId: "not-lower-level",
+          data: { module: "layerA", file: "layerB" },
         },
       ],
     },
