@@ -87,7 +87,7 @@ The default configuration is as follows:
 }
 ```
 
-Imported modules can be excluded from the rule (`stratified-imports`) using the `excludeImports` option:
+Imported modules are excluded from the rule (`stratified-imports`) using the `excludeImports` option:
 
 ```json
 {
@@ -96,6 +96,18 @@ Imported modules can be excluded from the rule (`stratified-imports`) using the 
     { "excludeImports": ["**/*.css"] }
   ]
 }
+```
+
+Explicitly imported types are excluded using `ignoreType` option:
+
+```json
+{
+  "stratified-design/stratified-imports": ["error", { "ignoreType": true }]
+}
+```
+
+```js
+import type { SomeType } from "./type"; // Explicitly imported types are excluded
 ```
 
 ## Rule Details
