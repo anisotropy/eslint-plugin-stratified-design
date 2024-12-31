@@ -198,6 +198,15 @@ ruleTester.run("no-same-level-funcs", rule, {
       code: "/*@level 3*/const func3 = () => 'a'; /*@level 2*/const arr = [func3]; /*@level 1*/const func1 = () => { arr[0]() } ",
       filename: "./src/foo.js",
     },
+
+    {
+      code: "import { func } from './module'; const arr = [{a: {b: {c: [func]}}}];",
+      filename: "./src/foo.js",
+    },
+    {
+      code: "const func = () => {}; const arr = [{a: {b: {c: [func]}}}];",
+      filename: "./src/foo.js",
+    },
   ],
   invalid: [
     {
@@ -349,6 +358,11 @@ ruleTester.run("no-same-level-funcs", rule, {
     },
     {
       code: "const func3 = () => 'a'; const arr = [func3]; const func1 = () => { arr[0]() } ",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "arr" } }],
+    },
+    {
+      code: "const func3 = () => {}; const arr = [{a: {b: {c: [func3]}}}]; const func1 = () => arr[0].a.b.c[0]();",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "arr" } }],
     },
