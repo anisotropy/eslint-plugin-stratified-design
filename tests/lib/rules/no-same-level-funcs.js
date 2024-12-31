@@ -210,6 +210,14 @@ ruleTester.run("no-same-level-funcs", rule, {
       code: "/*@level 3*/const func3 = () => {}; /*@level 2*/const arr = [{a: {b: {c: [func3]}}}]; /*@level 1*/const func1 = () => arr[0].a.b.c[0]();",
       filename: "./src/foo.js",
     },
+    {
+      code: "const obj2 = {}; const obj1 = {...obj2};",
+      filename: "./src/foo.js",
+    },
+    {
+      code: "const arr2 = []; const arr1 = [...arr2];",
+      filename: "./src/foo.js",
+    },
   ],
   invalid: [
     {
