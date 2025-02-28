@@ -215,6 +215,224 @@ ruleTester.run("no-disallowed-imports", rule, {
         },
       ],
     },
+
+    {
+      code: "export { foo } from './fileA'",
+      filename: "./src/fileB.js",
+      options: [],
+    },
+    {
+      code: "export { foo } from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [{ import: { member: ["foo"], from: "src/fileA" } }],
+        },
+      ],
+    },
+    {
+      code: "export { foo } from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["baz"], from: "src/fileC" },
+              allow: ["src/**/*.js"],
+            },
+            {
+              import: { member: ["foo", "bar"], from: "src/fileA" },
+              allow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { foo } from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["foo", "bar"], from: "src/fileA" },
+              disallow: ["src/**/*.test.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { foo } from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["foo", "bar"], from: "src/fileA" },
+              allow: ["src/**/*.js"],
+              disallow: ["src/**/*.test.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { foo } from '@/fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["foo"], from: "src/fileA" },
+              allow: ["src/**/*.js"],
+            },
+          ],
+          aliases: { "@/": "./src/" },
+        },
+      ],
+    },
+    {
+      code: "export * from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["*"], from: "src/fileA" },
+              allow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export * as name from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["*"], from: "src/fileA" },
+              allow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { foo } from 'nodeModule'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["*"], from: "src/fileA" },
+              disallow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { anyMember } from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "src/fileA" },
+              allow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export * as namespace from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "src/fileA" },
+              allow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { anyMember } from './fileA.act'",
+      filename: "./src/fileB.cal.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "**/*.act" },
+              allow: ["src/**/*.cal.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { anyMember } from 'fileA.cal'",
+      filename: "./src/fileB.act.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "**/*.act" },
+              disallow: ["src/**/*.cal.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { anyMember } from 'nodeModule'",
+      filename: "./src/fileB.cal.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "**/*.act" },
+              disallow: ["src/**/*.cal.js"],
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: "const foo = 'a'; export { foo };",
+      filename: "./src/fileB.cal.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["foo"], from: "**/*.act" },
+              disallow: ["src/**/*.cal.js"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "const foo = 'a'; export default foo;",
+      filename: "./src/fileB.cal.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["foo"], from: "**/*.act" },
+              disallow: ["src/**/*.cal.js"],
+            },
+          ],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -297,6 +515,102 @@ ruleTester.run("no-disallowed-imports", rule, {
     },
     {
       code: "import { anyMember } from './fileA.act'",
+      filename: "./src/fileB.cal.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: "*", from: "**/*.act" },
+              disallow: ["**/*.cal.js"],
+            },
+          ],
+        },
+      ],
+      errors: [
+        { messageId: "no-disallowed-imports", data: { member: "Any member", from: "**/*.act" } },
+      ],
+    },
+
+    {
+      code: "export { foo } from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["foo"], from: "src/fileA" },
+              allow: ["src/**/*.test.js"],
+            },
+          ],
+        },
+      ],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "'foo'", from: "src/fileA" } }],
+    },
+    {
+      code: "export { foo } from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["foo"], from: "src/fileA" },
+              disallow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "'foo'", from: "src/fileA" } }],
+    },
+    {
+      code: "export { foo } from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["foo"], from: "src/fileA" },
+              allow: ["src/**/*.js"],
+              disallow: ["src/**/fileB.*"],
+            },
+          ],
+        },
+      ],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "'foo'", from: "src/fileA" } }],
+    },
+    {
+      code: "export * from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["*"], from: "src/fileA" },
+              disallow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+      errors: [{ messageId: "no-disallowed-imports", data: { member: "'*'", from: "src/fileA" } }],
+    },
+    {
+      code: "export * as name from './fileA'",
+      filename: "./src/fileB.js",
+      options: [
+        {
+          imports: [
+            {
+              import: { member: ["*"], from: "src/fileA" },
+              disallow: ["src/**/*.js"],
+            },
+          ],
+        },
+      ],
+      errors: [
+        { messageId: "no-disallowed-imports", data: { member: "'name'", from: "src/fileA" } },
+      ],
+    },
+    {
+      code: "export { anyMember } from './fileA.act'",
       filename: "./src/fileB.cal.js",
       options: [
         {
