@@ -218,6 +218,19 @@ ruleTester.run("no-same-level-funcs", rule, {
       code: "const arr2 = []; const arr1 = [...arr2];",
       filename: "./src/foo.js",
     },
+
+    {
+      code: "//@level 2\nconst [dat, fn2] = someFn()\nconst fn1 = () => { fn2() }\n",
+      filename: "./src/foo.js",
+    },
+    {
+      code: "//@level 2\nconst {dat, fn2} = someFn()\nconst fn1 = () => { fn2() }\n",
+      filename: "./src/foo.js",
+    },
+    {
+      code: "//@level 2\nconst {dat, fn2: func2} = someFn()\nconst fn1 = () => { func2() }\n",
+      filename: "./src/foo.js",
+    },
   ],
   invalid: [
     {
@@ -376,6 +389,22 @@ ruleTester.run("no-same-level-funcs", rule, {
       code: "const func3 = () => {}; const arr = [{a: {b: {c: [func3]}}}]; const func1 = () => arr[0].a.b.c[0]();",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "arr" } }],
+    },
+
+    {
+      code: "const [dat, fn2] = someFn()\nconst fn1 = () => { fn2() }\n",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "fn2" } }],
+    },
+    {
+      code: "const {dat, fn2} = someFn()\nconst fn1 = () => { fn2() }\n",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "fn2" } }],
+    },
+    {
+      code: "const {dat, fn2: func2} = someFn()\nconst fn1 = () => { func2() }\n",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "func2" } }],
     },
   ],
 });
