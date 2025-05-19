@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-stratified-design",
-  "version": "0.12.8",
+  "version": "0.12.9",
   "description": "ESlint rules for stratified design",
   "keywords": [
     "eslint",
@@ -21,6 +21,7 @@
     "lint": "eslint .",
     "test": "mocha tests --recursive",
     "test:watch": "mocha tests --recursive --watch",
+    "test:single": "mocha tests --watch",
     "versioning": "node ./scripts/versioning"
   },
   "dependencies": {

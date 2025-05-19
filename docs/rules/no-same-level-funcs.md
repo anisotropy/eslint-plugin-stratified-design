@@ -115,4 +115,10 @@ const funcC = (...) => {
   funcB(...)
   ...
 }
+
+// @data
+const data = (() => 'a')();
+// @level 2
+const funcC2 = (data) => data;
+const funcC1 = funcC2(data)
 ```
