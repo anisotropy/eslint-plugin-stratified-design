@@ -85,6 +85,11 @@ const funcC = (...) => {
 }
 ```
 
+```js
+const func = () => "a";
+const obj = { a: func() };
+```
+
 Examples of **correct** code for this rule:
 
 ```js
@@ -115,4 +120,10 @@ const funcC = (...) => {
   funcB(...)
   ...
 }
+```
+
+```js
+const func = () => "a";
+// @data
+const obj = { a: func() };
 ```
