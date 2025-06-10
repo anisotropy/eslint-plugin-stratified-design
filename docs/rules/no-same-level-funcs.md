@@ -127,3 +127,10 @@ const func = () => "a";
 // @data
 const obj = { a: func() };
 ```
+
+```js
+import { lib } from "module";
+//@import
+const { fn2 } = lib;
+const fn1 = () => fn2();
+```
