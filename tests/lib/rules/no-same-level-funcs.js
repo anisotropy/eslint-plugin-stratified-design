@@ -268,35 +268,7 @@ ruleTester.run("no-same-level-funcs", rule, {
       filename: "./src/foo.js",
     },
     {
-      code: "import { lib } from 'lib'; const { fn2 } = lib; const fn1 = () => fn2()",
-      filename: "./src/foo.js",
-    },
-    {
-      code: "import { lib } from 'lib'; const fn2 = lib.fn2; const fn1 = () => fn2()",
-      filename: "./src/foo.js",
-    },
-    {
-      code: "import { fn2 } from 'lib'; const arr = [fn2]; const fn1 = () => arr[0]()",
-      filename: "./src/foo.js",
-    },
-    {
-      code: "import { fn2 } from 'lib'; const arr = [fn2()]; const fn1 = () => arr.push(1)",
-      filename: "./src/foo.js",
-    },
-    {
-      code: "import { fn2 } from 'lib'; const data = [...fn2()]; const fn1 = () => data.push(1)",
-      filename: "./src/foo.js",
-    },
-    {
-      code: "import { fn2 } from 'lib'; const arr = [fn2]; const fn1 = () => arr.push(1)",
-      filename: "./src/foo.js",
-    },
-    {
-      code: "import { Comp2 } from 'lib'; const arr = [<Comp2 />]; const fn1 = () => arr.push(1)",
-      filename: "./src/foo.js",
-    },
-    {
-      code: "import { Comp2 } from 'lib'; const arr = [Comp2]; const fn1 = () => arr.push(1)",
+      code: "import { lib } from 'lib'; /*@import*/const { fn2 } = lib; const fn1 = () => fn2()",
       filename: "./src/foo.js",
     },
   ],
@@ -482,6 +454,52 @@ ruleTester.run("no-same-level-funcs", rule, {
       code: "const fn2 = () => {}; const fn1 = () => { const _fn2 = fn2; const __fn2 = _fn2; __fn2()}",
       filename: "./src/foo.js",
       errors: [{ messageId: "no-same-level-funcs", data: { func: "__fn2" } }],
+    },
+
+    {
+      code: "import { lib } from 'lib'; const { fn2 } = lib; const fn1 = () => fn2()",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "fn2" } }],
+    },
+    {
+      code: "import { lib } from 'lib'; const fn2 = lib.fn2; const fn1 = () => fn2()",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "fn2" } }],
+    },
+    {
+      code: "import { fn2 } from 'lib'; const arr = [fn2]; const fn1 = () => arr[0]()",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "arr" } }],
+    },
+    {
+      code: "import { hof1, hof2 } from 'lib'; const fn2 = hof2(); const fn1 = () => hof1(fn2)",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "fn2" } }],
+    },
+    {
+      code: "import { fn2 } from 'lib'; const arr = [fn2()]; const fn1 = () => arr.push(1)",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "arr" } }],
+    },
+    {
+      code: "import { fn2 } from 'lib'; const data = [...fn2()]; const fn1 = () => data.push(1)",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "data" } }],
+    },
+    {
+      code: "import { fn2 } from 'lib'; const arr = [fn2]; const fn1 = () => arr.push(1)",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "arr" } }],
+    },
+    {
+      code: "import { Comp2 } from 'lib'; const arr = [<Comp2 />]; const fn1 = () => arr.push(1)",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "arr" } }],
+    },
+    {
+      code: "import { Comp2 } from 'lib'; const arr = [Comp2]; const fn1 = () => arr.push(1)",
+      filename: "./src/foo.js",
+      errors: [{ messageId: "no-same-level-funcs", data: { func: "arr" } }],
     },
   ],
 });
