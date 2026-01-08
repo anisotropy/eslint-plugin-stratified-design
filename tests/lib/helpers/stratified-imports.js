@@ -150,6 +150,13 @@ describe("helpers/stratified-imports", () => {
       {
         expected: true,
         rawStructure: [
+          ["layerA", { name: "layerA/layerB", nodeModule: true }],
+          ["layerC"],
+        ],
+      },
+      {
+        expected: true,
+        rawStructure: [
           ["layerA", { name: "layerB", barrier: true }],
           ["layerC"],
         ],
